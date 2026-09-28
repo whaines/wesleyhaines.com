@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" height="48" overflow="visible" preserveAspectRatio="none" viewBox="0 0 48 48" width="48">
+<g data-figma-bg-blur-radius="40" id="Frame 3539">
+<rect fill="url(#paint0_linear_0_66438)" height="48" rx="24" width="48"/>
+<path d="M36 23.9865C36 30.61 30.6139 36 24.0013 36C17.6819 36 12.4291 31.0659 12.0025 24.7641C11.9759 24.4424 12.1625 24.1205 12.4824 23.9866C12.7757 23.8525 13.149 23.9061 13.3889 24.1474C14.962 25.7295 16.8818 26.5877 18.8017 26.5877C23.068 26.5877 26.5075 23.1016 26.5075 18.838C26.5075 16.8804 25.6542 14.9497 24.0811 13.3675C23.8411 13.1262 23.7877 12.7776 23.9211 12.4826C24.0545 12.1876 24.3744 12 24.6943 12C31.0407 12.3485 36 17.6311 36 23.9865Z" fill="white" id="Vector"/>
+</g>
+<defs>
+<clipPath id="bgblur_0_0_66438_clip_path" transform="translate(40 40)">
+      <rect height="48" rx="24" width="48"/>
+</clipPath>
+    <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_0_66438" x1="0" x2="59.4311" y1="0" y2="43.6488">
+<stop stop-color="#4776E6"/>
+<stop offset="1" stop-color="#8E54E9"/>
+</linearGradient>
+</defs>
+</svg>

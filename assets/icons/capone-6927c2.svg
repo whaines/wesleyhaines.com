@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" height="48" overflow="visible" preserveAspectRatio="none" viewBox="0 0 48 48" width="48">
+<g data-figma-bg-blur-radius="100" id="capone">
+<rect fill="#004977" height="48" rx="24" width="48"/>
+<path d="M6 8.49998C6 8.49998 27.7059 7.27272 32.8468 8.58183C37.9876 9.89094 39.9154 9.89093 41.2006 13.1636C45.0219 22.8943 7.5 41.5 7.5 41.5L6.5 40C6.5 40 25.4568 26.2546 24.4929 19.7091C23.529 13.1637 3.5 12 3.5 12L6 8.49998Z" fill="#DE4953" id="Rectangle 15441"/>
+</g>
+<defs>
+<clipPath id="bgblur_0_0_67931_clip_path" transform="translate(100 100)">
+      <rect height="48" rx="24" width="48"/>
+</clipPath>
+  </defs>
+</svg>
