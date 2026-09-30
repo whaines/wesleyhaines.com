@@ -806,3 +806,86 @@ a.cta:hover { opacity: .6; }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
+
+/* =====================================================================
+   Motion Lab 2 studies (branch motion-lab-2). Each keyed to an m-* class; ?lab toggles them.
+   ===================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  /* 1 · Titles resolve from a soft blur and loose tracking */
+  .js.m-tblur :is(.cs-header__title, .section-head__title)[data-appear] {
+    filter: blur(10px); letter-spacing: .02em;
+    transition: opacity .9s ease var(--appear-delay, 0s), transform .9s cubic-bezier(.22, 1, .36, 1) var(--appear-delay, 0s),
+                filter 1.2s cubic-bezier(.22, 1, .36, 1) var(--appear-delay, 0s), letter-spacing 1.4s cubic-bezier(.22, 1, .36, 1) var(--appear-delay, 0s);
+  }
+  .js.m-tblur :is(.cs-header__title, .section-head__title).is-in { filter: blur(0); letter-spacing: -0.04em; }
+
+  /* 2 · Titles arrive upright and settle into italic */
+  .js.m-italic :is(.cs-header__title, .section-head__title)[data-appear] { transform: translateY(var(--appear-y, 40px)) scale(var(--appear-scale, .75)) skewX(11deg); }
+  .js.m-italic :is(.cs-header__title, .section-head__title)[data-appear].is-in { transform: none; }
+
+  /* 3 · The framing question arrives word by word (JS wraps words in .w) */
+  .js.m-words .cs-header__question .w { display: inline-block; opacity: 0; filter: blur(4px); translate: 0 .25em; white-space: pre; }
+  .js.m-words .cs-header__question.is-in .w { animation: word-in .8s cubic-bezier(.22, 1, .36, 1) forwards; }
+  @keyframes word-in { to { opacity: 1; filter: blur(0); translate: 0 0; } }
+
+  /* 4 · The project tint deepens slightly through the body of a case study (JS sets --tint-boost 0..1) */
+  .m-tint :is(.cs-hero, .cs-card) { box-shadow: inset 0 0 0 100vmax color-mix(in srgb, var(--brand) calc(var(--tint-boost, 0) * 7%), transparent); }
+
+  /* 5 · A soft tinted contact shadow under each hero mockup, breathing with its float (JS sets --lift) */
+  .m-shadow .cs-hero img { z-index: 1; }
+  .m-shadow .cs-hero::after {
+    content: ""; position: absolute; z-index: 0; left: 50%; bottom: 7%; width: 56%; height: 48px; translate: -50% 0;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--brand) 38%, transparent), transparent);
+    filter: blur(14px); scale: calc(1 - var(--lift, 0) * .18) 1; opacity: calc(.75 - var(--lift, 0) * .25); pointer-events: none;
+  }
+
+  /* 6 · A slow sheen crosses the glass controls about every 12 seconds */
+  .m-sheen :is(.pill, .chip, .viewall__btn, .switch, .cases) { position: relative; overflow: hidden; }
+  .m-sheen :is(.pill, .chip, .viewall__btn, .switch, .cases)::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+    background: linear-gradient(105deg, transparent 35%, color-mix(in srgb, var(--neutral-white) 38%, transparent) 50%, transparent 65%) no-repeat;
+    background-size: 250% 100%; background-position: 150% 0; animation: sheen 12s ease-in-out infinite;
+  }
+  [data-theme="dark"].m-sheen :is(.pill, .chip, .viewall__btn, .switch, .cases)::after { background-image: linear-gradient(105deg, transparent 35%, color-mix(in srgb, var(--neutral-white) 12%, transparent) 50%, transparent 65%); }
+  .m-sheen .chip::after { animation-delay: .25s; }
+  .m-sheen .viewall__btn::after { animation-delay: .5s; }
+  .m-sheen .switch::after { animation-delay: .75s; }
+  @keyframes sheen { 0% { background-position: 150% 0; } 14%, 100% { background-position: -50% 0; } }
+
+  /* 8 · Near the end of a case study the next project's tint rises from the bottom (JS sets --bleed-o) */
+  .next-bleed {
+    position: fixed; z-index: 1; left: 0; right: 0; bottom: 0; height: 55vh; pointer-events: none;
+    background: var(--bleed-tint); opacity: var(--bleed-o, 0);
+    -webkit-mask-image: linear-gradient(to top, #000, transparent); mask-image: linear-gradient(to top, #000, transparent);
+  }
+
+  /* 11 · Read.me photos develop like film */
+  .js.m-develop .photo img { filter: grayscale(1) contrast(.82) brightness(1.08); transition: filter 1.6s cubic-bezier(.22, 1, .36, 1); }
+  .js.m-develop .photo.developed img { filter: none; }
+
+  /* 12 · Going dark, the aura dims like dusk before the dissolve */
+  .dusk .aura img { filter: brightness(.55) saturate(.6); transition: filter .5s ease; }
+
+  /* 10 · First visit: the caret holds a beat before typing (JS), the gallery waits for the first word */
+}
+
+/* 9 · The Home gallery settles on a card edge; the Vert gallery on a row */
+.m-snap .home-main > .gallery { scroll-snap-type: x proximity; }
+.m-snap .home .gcard { scroll-snap-align: start; }
+@media (min-width: 1280px) {
+  .m-snap .vert-main > .gallery { scroll-snap-type: y proximity; }
+  .m-snap .vert .gcard { scroll-snap-align: start; }
+}
+
+/* Motion Lab panel (?lab) */
+.lab {
+  position: fixed; z-index: 100; left: 12px; top: 50%; translate: 0 -50%; width: 240px;
+  padding: 14px 16px; border-radius: 16px; background: var(--neutral-paper); color: var(--neutral-ink);
+  box-shadow: 0 0 0 1px var(--neutral-ink-a12), 0 12px 40px var(--neutral-ink-a20);
+  font: 500 13px/16px var(--font-sans); letter-spacing: -0.02em;
+}
+.lab h2 { font: italic 400 24px/28px var(--font-serif); margin: 0 0 8px; }
+.lab label { display: flex; align-items: center; gap: 8px; padding: 3px 0; cursor: pointer; }
+.lab input { accent-color: var(--brand-instagram-solid); }
+.lab p { margin: 8px 0 0; color: var(--neutral-ink-a50); }
+.lab button { margin-top: 8px; font: inherit; color: var(--neutral-ink-a50); text-decoration: underline; }

@@ -20,9 +20,12 @@
     if (!btn) return;
     var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
     if (!on('wipe') || !document.startViewTransition) { setTheme(next); return; }
-    root.classList.add('theme-dissolve');
-    var t = document.startViewTransition(function () { setTheme(next); });
-    t.finished.finally(function () { root.classList.remove('theme-dissolve'); });
+    var go = function () {
+      root.classList.add('theme-dissolve');
+      var t = document.startViewTransition(function () { setTheme(next); });
+      t.finished.finally(function () { root.classList.remove('theme-dissolve', 'dusk'); });
+    };
+    if (next === 'dark' && on('dusk')) { root.classList.add('dusk'); setTimeout(go, 480); } else go();
   });
 
   /* ---------- "View All" project menu ---------- */
@@ -50,7 +53,9 @@
       var cards = entries.filter(function (en) { return en.isIntersecting && en.target.classList.contains('gcard'); })
         .map(function (en) { return en.target; })
         .sort(function (a, b) { var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect(); return (ra.top - rb.top) || (ra.left - rb.left); });
-      cards.forEach(function (el, k) { el.style.setProperty('--appear-delay', (k * 0.12) + 's'); });
+      var base = root.classList.contains('first-visit') && !window.__firstDone ? 1.8 : 0;
+      cards.forEach(function (el, k) { el.style.setProperty('--appear-delay', (base + k * 0.12) + 's'); });
+      if (cards.length) window.__firstDone = true;
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
       });
@@ -104,7 +109,7 @@
       setTimeout(tick, deleting ? 50 : 100);
     }
     out.textContent = '';
-    setTimeout(tick, 400);
+    setTimeout(tick, root.classList.contains('first-visit') ? 1400 : 400);
   });
 
   /* ---------- Letter-by-letter reveal ---------- */
@@ -130,14 +135,20 @@
   var pending = false;
   function float() {
     pending = false;
-    if (!on('parallax')) return;
+    var par = on('parallax'), shadow = on('shadow');
+    if (!par && !shadow) return;
     var vw = innerWidth, vh = innerHeight;
     floaters.forEach(function (el) {
       var r = el.getBoundingClientRect();
       if (r.bottom < -200 || r.top > vh + 200 || r.right < -200 || r.left > vw + 200) return;
       var cy = r.top + r.height / 2 - vh / 2, cx = r.left + r.width / 2 - vw / 2;
-      el.style.setProperty('--py', (-cy * 0.05).toFixed(1) + 'px');
-      el.style.setProperty('--px', (-cx * 0.04).toFixed(1) + 'px');
+      if (par) {
+        el.style.setProperty('--py', (-cy * 0.05).toFixed(1) + 'px');
+        el.style.setProperty('--px', (-cx * 0.04).toFixed(1) + 'px');
+      }
+      if (shadow && el.parentElement.classList.contains('cs-hero')) {
+        el.parentElement.style.setProperty('--lift', Math.max(-1, Math.min(1, -cy / (vh * 0.6))).toFixed(3));
+      }
     });
   }
   function onScrollFloat() { if (!pending) { pending = true; raf(float); } }
@@ -184,4 +195,102 @@
   addEventListener('resize', onScrollFloat);
   float();
 
+  /* ---------- Lab 2 · 3: the framing question arrives word by word ---------- */
+  if (on('words')) {
+    document.querySelectorAll('.cs-header__question').forEach(function (q) {
+      var text = q.textContent;
+      q.setAttribute('aria-label', text);
+      q.textContent = '';
+      text.split(/(\s+)/).forEach(function (part, k) {
+        if (/^\s+$/.test(part)) { q.appendChild(document.createTextNode(part)); return; }
+        var w = document.createElement('span');
+        w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+        w.style.animationDelay = (0.35 + (k / 2) * 0.045).toFixed(3) + 's';
+        w.textContent = part;
+        q.appendChild(w);
+      });
+    });
+  }
+
+  /* ---------- Lab 2 · 7: case-study chapters — hero first, then its cards ---------- */
+  if (on('chapters') && matchMedia('(min-width: 1280px)').matches) {
+    document.querySelectorAll('.cs-group').forEach(function (g) {
+      var hero = g.querySelector('.cs-hero');
+      if (hero) hero.style.setProperty('--appear-delay', '0s');
+      g.querySelectorAll('.cs-card').forEach(function (c, k) { c.style.setProperty('--appear-delay', (0.22 + k * 0.2) + 's'); });
+    });
+  }
+
+  /* ---------- Lab 2 · 4 and 8: tint deepens through the body; next project's tint rises near the end ---------- */
+  var body = document.querySelector('.cs-body'), footer = document.querySelector('.cs-footer');
+  var nextCard = document.querySelector('.next__card--next'), bleed = null;
+  if (on('bleed') && nextCard && footer) {
+    bleed = document.createElement('div');
+    bleed.className = 'next-bleed'; bleed.setAttribute('aria-hidden', 'true');
+    bleed.style.setProperty('--bleed-tint', nextCard.style.getPropertyValue('--card-tint'));
+    document.body.appendChild(bleed);
+  }
+  var tintPending = false;
+  function tint() {
+    tintPending = false;
+    var vh = innerHeight;
+    if (on('tint') && body) {
+      var r = body.getBoundingClientRect();
+      var p = Math.max(0, Math.min(1, (vh - r.top) / (r.height + vh)));
+      document.body.style.setProperty('--tint-boost', Math.sin(Math.PI * p).toFixed(3));
+    }
+    if (bleed) {
+      var f = footer.getBoundingClientRect();
+      var o = Math.max(0, Math.min(1, (vh - f.top + 120) / (vh * 0.7)));
+      bleed.style.setProperty('--bleed-o', (o * 0.9).toFixed(3));
+    }
+  }
+  if (body || bleed) {
+    addEventListener('scroll', function () { if (!tintPending) { tintPending = true; raf(tint); } }, { passive: true });
+    tint();
+  }
+
+  /* ---------- Lab 2 · 11: Read.me photos develop like film ---------- */
+  if (on('develop') && 'IntersectionObserver' in window) {
+    var dio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('developed'); dio.unobserve(en.target); } });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.photo').forEach(function (p) { dio.observe(p); });
+  }
+
+})();
+
+/* ---------- First visit is remembered after this page ---------- */
+try { localStorage.setItem('visited', '1'); } catch (e) {}
+
+/* ---------- Motion Lab 2: ?lab shows a panel to switch each study on and off ---------- */
+(function () {
+  var FLAGS = [
+    ['tblur', 'Titles resolve from a blur'], ['italic', 'Titles settle into italic'], ['words', 'Question arrives word by word'],
+    ['tint', 'Tint deepens through the page'], ['shadow', 'Soft shadow under mockups'], ['sheen', 'Sheen across glass controls'],
+    ['chapters', 'Hero first, then its cards'], ['bleed', 'Next project’s tint rises'], ['snap', 'Gallery settles on a card'],
+    ['first', 'First-visit pause'], ['develop', 'Read.me photos develop'], ['dusk', 'Aura dims before going dark']
+  ];
+  var store = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} };
+  if (/[?&]lab\b/.test(location.search)) store('motion-lab', '1');
+  if (store('motion-lab') !== '1') return;
+  var off = [];
+  try { off = JSON.parse(store('motion-lab-off') || '[]'); } catch (e) {}
+  var panel = document.createElement('aside');
+  panel.className = 'lab';
+  panel.setAttribute('aria-label', 'Motion Lab');
+  panel.innerHTML = '<h2>Motion Lab 2</h2>' + FLAGS.map(function (f) {
+    return '<label><input type="checkbox" id="lab-' + f[0] + '" data-flag="' + f[0] + '"' + (off.indexOf(f[0]) < 0 ? ' checked' : '') + '> ' + f[1] + '</label>';
+  }).join('') + '<p>Entrances show on the next page load. The first-visit pause replays after you reset it.</p>'
+    + '<button type="button" data-lab-reset>Reset first visit</button><br><button type="button" data-lab-close>Hide this panel</button>';
+  document.body.appendChild(panel);
+  panel.addEventListener('change', function (e) {
+    var f = e.target.getAttribute('data-flag');
+    off = off.filter(function (x) { return x !== f; });
+    if (!e.target.checked) off.push(f);
+    store('motion-lab-off', JSON.stringify(off));
+    document.documentElement.classList.toggle('m-' + f, e.target.checked);
+  });
+  panel.querySelector('[data-lab-reset]').addEventListener('click', function () { store('visited', null); location.reload(); });
+  panel.querySelector('[data-lab-close]').addEventListener('click', function () { store('motion-lab', null); panel.remove(); });
 })();
