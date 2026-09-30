@@ -18,6 +18,35 @@
     if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     document.documentElement.dataset.theme = t;
     document.documentElement.classList.add('js');
+    // Motion effects (each is also off for prefers-reduced-motion, in CSS and site.js).
+    ['vt', 'drift', 'parallax', 'draw', 'wipe', 'hello', 'settle', 'lean', 'focus'].forEach(function (f) {
+      document.documentElement.classList.add('m-' + f);
+    });
+    // Page-to-page continuity: pair the opened gallery card with the case study's color and first mockup.
+    var root = document.documentElement;
+    var page = function (url) { var p = new URL(url, location.href).pathname.replace(/\/$/, '').split('/').pop().replace(/\.html$/, ''); return p === 'index' ? '' : p; };
+    var isGallery = function (p) { return p === '' || p === 'wesleyhaines.com' || p === 'vert'; };
+    var ss = function (k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} };
+    addEventListener('pagereveal', function (e) {
+      if (!e.viewTransition) return;
+      if (!root.classList.contains('m-vt') || matchMedia('(prefers-reduced-motion: reduce)').matches) { e.viewTransition.skipTransition(); return; }
+      var here = page(location.href), to = ss('vtTo'), from = ss('vtFrom');
+      ss('vtTo', null); ss('vtFrom', null);
+      if (to && to === here) { root.classList.add('vt-pair'); }
+      else if (from && isGallery(here)) {
+        var card = document.querySelector('.gcard[href="' + from + '"]');
+        if (card) card.classList.add('vt-active');
+      }
+      e.viewTransition.finished.finally(function () {
+        root.classList.remove('vt-pair');
+        document.querySelectorAll('.gcard.vt-active').forEach(function (c) { c.classList.remove('vt-active'); });
+      });
+    });
+    addEventListener('pageswap', function (e) {
+      if (!e.viewTransition || !e.activation || !root.classList.contains('m-vt')) return;
+      var here = page(location.href), dest = page(e.activation.entry.url);
+      if (!isGallery(here) && isGallery(dest)) { root.classList.add('vt-pair'); ss('vtFrom', here); }
+    });
   })();
 </script>
 <link rel="preload" href="assets/fonts/Inter-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -33,7 +62,8 @@
 </script>
 <script defer src="assets/js/site.js"></script>
 </head>
-<body class="case case--duolingo" style="--brand: var(--brand-duolingo-solid); --tint: var(--brand-duolingo-a12); --tint-strong: var(--brand-duolingo-a24, var(--brand-duolingo-a24)); --brand-a50: var(--brand-duolingo-a50, var(--brand-duolingo-solid))">
+<body class="case case--duolingo" style="--brand: var(--brand-duolingo-solid); --tint: var(--brand-duolingo-a12); --tint-strong: var(--brand-duolingo-a24, var(--brand-duolingo-a24)); --brand-a50: var(--brand-duolingo-a50, var(--brand-duolingo-solid)); --vt-card: card-duolingo; --vt-mock: mock-duolingo" data-slug="duolingo">
+<div class="vt-wash" aria-hidden="true"></div>
 <nav class="topnav" aria-label="Site">
   <div class="topnav__left">
     <a class="topnav__back icon-btn" href="./" aria-label="Home"><img class=" for-light" src="assets/icons/frame-ae97b8.svg" alt="" width="48" height="48"><img class=" for-dark" src="assets/icons/frame-624ea6.svg" alt="" width="48" height="48" aria-hidden="true"></a>
@@ -59,7 +89,7 @@
       <div class="caption" style="--caption:var(--brand-duolingo-solid);--appear-scale:1" data-appear><img class="caption__line" src="assets/icons/line-5ae868.svg" alt="" aria-hidden="true"><p class="caption__row"><span>Staff Designer</span><span>AI &amp; Learning</span><span>New York, NY</span></p></div>
       <div class="cs-grid">
         <div class="cs-group">
-          <figure class="cs-hero" data-appear><img class="" src="assets/img/duolingo-card-1a8abf.webp" srcset="assets/img/duolingo-card-1a8abf-sm.webp 800w, assets/img/duolingo-card-1a8abf.webp 1600w" sizes="1100px" alt="duo_hero 1" style="--w-xl:1100.0px;--w-lg:800.0px;--w-md:750.0px;--w-sm:300.0px"></figure>
+          <figure class="cs-hero" data-vt-first data-appear><img class="" src="assets/img/duolingo-card-1a8abf.webp" srcset="assets/img/duolingo-card-1a8abf-sm.webp 800w, assets/img/duolingo-card-1a8abf.webp 1600w" sizes="1100px" alt="duo_hero 1" style="--w-xl:1100.0px;--w-lg:800.0px;--w-md:750.0px;--w-sm:300.0px"></figure>
           <div class="cs-cards"><article class="cs-card" data-appear style="--appear-delay:0.0s"><div class="cs-card__inner"><p class="cs-card__label">AI in Lessons</p><div class="cs-card__text"><h2 class="cs-card__title">Explain<br class="at-lg at-xl">My Answer</h2><p class="cs-card__body">Personalized feedback on your language courses that explains grammar and language concepts.</p></div></div></article><article class="cs-card" data-appear style="--appear-delay:0.1s"><div class="cs-card__inner"><p class="cs-card__label">AI in Conversations</p><div class="cs-card__text"><h2 class="cs-card__title">Roleplay</h2><p class="cs-card__body">Real-world conversations that supercharge your language learning skills.</p></div></div></article></div>
         </div>
         <div class="cs-group cs-group--flip">

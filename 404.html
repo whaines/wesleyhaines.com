@@ -19,6 +19,35 @@
     if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     document.documentElement.dataset.theme = t;
     document.documentElement.classList.add('js');
+    // Motion effects (each is also off for prefers-reduced-motion, in CSS and site.js).
+    ['vt', 'drift', 'parallax', 'draw', 'wipe', 'hello', 'settle', 'lean', 'focus'].forEach(function (f) {
+      document.documentElement.classList.add('m-' + f);
+    });
+    // Page-to-page continuity: pair the opened gallery card with the case study's color and first mockup.
+    var root = document.documentElement;
+    var page = function (url) { var p = new URL(url, location.href).pathname.replace(/\/$/, '').split('/').pop().replace(/\.html$/, ''); return p === 'index' ? '' : p; };
+    var isGallery = function (p) { return p === '' || p === 'wesleyhaines.com' || p === 'vert'; };
+    var ss = function (k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} };
+    addEventListener('pagereveal', function (e) {
+      if (!e.viewTransition) return;
+      if (!root.classList.contains('m-vt') || matchMedia('(prefers-reduced-motion: reduce)').matches) { e.viewTransition.skipTransition(); return; }
+      var here = page(location.href), to = ss('vtTo'), from = ss('vtFrom');
+      ss('vtTo', null); ss('vtFrom', null);
+      if (to && to === here) { root.classList.add('vt-pair'); }
+      else if (from && isGallery(here)) {
+        var card = document.querySelector('.gcard[href="' + from + '"]');
+        if (card) card.classList.add('vt-active');
+      }
+      e.viewTransition.finished.finally(function () {
+        root.classList.remove('vt-pair');
+        document.querySelectorAll('.gcard.vt-active').forEach(function (c) { c.classList.remove('vt-active'); });
+      });
+    });
+    addEventListener('pageswap', function (e) {
+      if (!e.viewTransition || !e.activation || !root.classList.contains('m-vt')) return;
+      var here = page(location.href), dest = page(e.activation.entry.url);
+      if (!isGallery(here) && isGallery(dest)) { root.classList.add('vt-pair'); ss('vtFrom', here); }
+    });
   })();
 </script>
 <link rel="preload" href="assets/fonts/Inter-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
