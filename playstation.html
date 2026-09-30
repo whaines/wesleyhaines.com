@@ -25,7 +25,7 @@
     // Motion Lab 2 studies: on unless switched off in the lab panel (?lab).
     var labOff = [];
     try { labOff = JSON.parse(localStorage.getItem('motion-lab-off') || '[]'); } catch (e) {}
-    ['tblur', 'italic', 'words', 'tint', 'shadow', 'sheen', 'chapters', 'bleed', 'snap', 'first', 'develop', 'dusk'].forEach(function (f) {
+    ['tblur', 'italic', 'words', 'chapters', 'bleed', 'snap', 'first', 'develop'].forEach(function (f) {
       if (labOff.indexOf(f) < 0) document.documentElement.classList.add('m-' + f);
     });
     try {

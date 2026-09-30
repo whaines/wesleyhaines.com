@@ -23,9 +23,9 @@
     var go = function () {
       root.classList.add('theme-dissolve');
       var t = document.startViewTransition(function () { setTheme(next); });
-      t.finished.finally(function () { root.classList.remove('theme-dissolve', 'dusk'); });
+      t.finished.finally(function () { root.classList.remove('theme-dissolve'); });
     };
-    if (next === 'dark' && on('dusk')) { root.classList.add('dusk'); setTimeout(go, 480); } else go();
+    go();
   });
 
   /* ---------- "View All" project menu ---------- */
@@ -135,20 +135,14 @@
   var pending = false;
   function float() {
     pending = false;
-    var par = on('parallax'), shadow = on('shadow');
-    if (!par && !shadow) return;
+    if (!on('parallax')) return;
     var vw = innerWidth, vh = innerHeight;
     floaters.forEach(function (el) {
       var r = el.getBoundingClientRect();
       if (r.bottom < -200 || r.top > vh + 200 || r.right < -200 || r.left > vw + 200) return;
       var cy = r.top + r.height / 2 - vh / 2, cx = r.left + r.width / 2 - vw / 2;
-      if (par) {
-        el.style.setProperty('--py', (-cy * 0.05).toFixed(1) + 'px');
-        el.style.setProperty('--px', (-cx * 0.04).toFixed(1) + 'px');
-      }
-      if (shadow && el.parentElement.classList.contains('cs-hero')) {
-        el.parentElement.style.setProperty('--lift', Math.max(-1, Math.min(1, -cy / (vh * 0.6))).toFixed(3));
-      }
+      el.style.setProperty('--py', (-cy * 0.05).toFixed(1) + 'px');
+      el.style.setProperty('--px', (-cx * 0.04).toFixed(1) + 'px');
     });
   }
   function onScrollFloat() { if (!pending) { pending = true; raf(float); } }
@@ -221,33 +215,29 @@
     });
   }
 
-  /* ---------- Lab 2 · 4 and 8: tint deepens through the body; next project's tint rises near the end ---------- */
-  var body = document.querySelector('.cs-body'), footer = document.querySelector('.cs-footer');
-  var nextCard = document.querySelector('.next__card--next'), bleed = null;
-  if (on('bleed') && nextCard && footer) {
-    bleed = document.createElement('div');
-    bleed.className = 'next-bleed'; bleed.setAttribute('aria-hidden', 'true');
-    bleed.style.setProperty('--bleed-tint', nextCard.style.getPropertyValue('--card-tint'));
-    document.body.appendChild(bleed);
+  /* ---------- Lab 2 · 8: previous and next projects' tints rise from their own sides near the end ---------- */
+  var footer = document.querySelector('.cs-footer'), bleeds = [];
+  if (on('bleed') && footer) {
+    [['prev', '.next__card--prev'], ['next', '.next__card--next']].forEach(function (pair) {
+      var card = document.querySelector(pair[1]);
+      if (!card) return;
+      var b = document.createElement('div');
+      b.className = 'next-bleed next-bleed--' + pair[0]; b.setAttribute('aria-hidden', 'true');
+      b.style.setProperty('--bleed-tint', card.style.getPropertyValue('--card-tint'));
+      document.body.appendChild(b);
+      bleeds.push(b);
+    });
   }
-  var tintPending = false;
-  function tint() {
-    tintPending = false;
-    var vh = innerHeight;
-    if (on('tint') && body) {
-      var r = body.getBoundingClientRect();
-      var p = Math.max(0, Math.min(1, (vh - r.top) / (r.height + vh)));
-      document.body.style.setProperty('--tint-boost', Math.sin(Math.PI * p).toFixed(3));
-    }
-    if (bleed) {
-      var f = footer.getBoundingClientRect();
-      var o = Math.max(0, Math.min(1, (vh - f.top + 120) / (vh * 0.7)));
-      bleed.style.setProperty('--bleed-o', (o * 0.9).toFixed(3));
-    }
+  var bleedPending = false;
+  function bleedStep() {
+    bleedPending = false;
+    var f = footer.getBoundingClientRect(), vh = innerHeight;
+    var o = Math.max(0, Math.min(1, (vh - f.top + 120) / (vh * 0.7)));
+    bleeds.forEach(function (b) { b.style.setProperty('--bleed-o', (o * 0.95).toFixed(3)); });
   }
-  if (body || bleed) {
-    addEventListener('scroll', function () { if (!tintPending) { tintPending = true; raf(tint); } }, { passive: true });
-    tint();
+  if (bleeds.length) {
+    addEventListener('scroll', function () { if (!bleedPending) { bleedPending = true; raf(bleedStep); } }, { passive: true });
+    bleedStep();
   }
 
   /* ---------- Lab 2 · 11: Read.me photos develop like film ---------- */
@@ -267,9 +257,8 @@ try { localStorage.setItem('visited', '1'); } catch (e) {}
 (function () {
   var FLAGS = [
     ['tblur', 'Titles resolve from a blur'], ['italic', 'Titles settle into italic'], ['words', 'Question arrives word by word'],
-    ['tint', 'Tint deepens through the page'], ['shadow', 'Soft shadow under mockups'], ['sheen', 'Sheen across glass controls'],
-    ['chapters', 'Hero first, then its cards'], ['bleed', 'Next project’s tint rises'], ['snap', 'Gallery settles on a card'],
-    ['first', 'First-visit pause'], ['develop', 'Read.me photos develop'], ['dusk', 'Aura dims before going dark']
+    ['chapters', 'Hero first, then its cards'], ['bleed', 'Both projects’ tints rise'], ['snap', 'Gallery settles on a card'],
+    ['first', 'First-visit pause'], ['develop', 'Read.me photos develop']
   ];
   var store = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} };
   if (/[?&]lab\b/.test(location.search)) store('motion-lab', '1');

@@ -828,43 +828,20 @@ a.cta:hover { opacity: .6; }
   .js.m-words .cs-header__question.is-in .w { animation: word-in .8s cubic-bezier(.22, 1, .36, 1) forwards; }
   @keyframes word-in { to { opacity: 1; filter: blur(0); translate: 0 0; } }
 
-  /* 4 · The project tint deepens slightly through the body of a case study (JS sets --tint-boost 0..1) */
-  .m-tint :is(.cs-hero, .cs-card) { box-shadow: inset 0 0 0 100vmax color-mix(in srgb, var(--brand) calc(var(--tint-boost, 0) * 7%), transparent); }
-
-  /* 5 · A soft tinted contact shadow under each hero mockup, breathing with its float (JS sets --lift) */
-  .m-shadow .cs-hero img { z-index: 1; }
-  .m-shadow .cs-hero::after {
-    content: ""; position: absolute; z-index: 0; left: 50%; bottom: 7%; width: 56%; height: 48px; translate: -50% 0;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--brand) 38%, transparent), transparent);
-    filter: blur(14px); scale: calc(1 - var(--lift, 0) * .18) 1; opacity: calc(.75 - var(--lift, 0) * .25); pointer-events: none;
-  }
-
-  /* 6 · A slow sheen crosses the glass controls about every 12 seconds */
-  .m-sheen :is(.pill, .chip, .viewall__btn, .switch, .cases) { position: relative; overflow: hidden; }
-  .m-sheen :is(.pill, .chip, .viewall__btn, .switch, .cases)::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
-    background: linear-gradient(105deg, transparent 35%, color-mix(in srgb, var(--neutral-white) 38%, transparent) 50%, transparent 65%) no-repeat;
-    background-size: 250% 100%; background-position: 150% 0; animation: sheen 12s ease-in-out infinite;
-  }
-  [data-theme="dark"].m-sheen :is(.pill, .chip, .viewall__btn, .switch, .cases)::after { background-image: linear-gradient(105deg, transparent 35%, color-mix(in srgb, var(--neutral-white) 12%, transparent) 50%, transparent 65%); }
-  .m-sheen .chip::after { animation-delay: .25s; }
-  .m-sheen .viewall__btn::after { animation-delay: .5s; }
-  .m-sheen .switch::after { animation-delay: .75s; }
-  @keyframes sheen { 0% { background-position: 150% 0; } 14%, 100% { background-position: -50% 0; } }
-
-  /* 8 · Near the end of a case study the next project's tint rises from the bottom (JS sets --bleed-o) */
+  /* 8 · Near the end of a case study, the previous and next projects' tints rise from the bottom,
+         each from its own side, meeting in the middle above the two cards (JS sets --bleed-o) */
   .next-bleed {
     position: fixed; z-index: 1; left: 0; right: 0; bottom: 0; height: 55vh; pointer-events: none;
     background: var(--bleed-tint); opacity: var(--bleed-o, 0);
-    -webkit-mask-image: linear-gradient(to top, #000, transparent); mask-image: linear-gradient(to top, #000, transparent);
+    -webkit-mask-image: linear-gradient(to top, #000, transparent), var(--bleed-side);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(to top, #000, transparent), var(--bleed-side); mask-composite: intersect;
   }
+  .next-bleed--prev { --bleed-side: linear-gradient(to right, #000 15%, transparent 72%); }
+  .next-bleed--next { --bleed-side: linear-gradient(to left, #000 15%, transparent 72%); }
 
   /* 11 · Read.me photos develop like film */
   .js.m-develop .photo img { filter: grayscale(1) contrast(.82) brightness(1.08); transition: filter 1.6s cubic-bezier(.22, 1, .36, 1); }
   .js.m-develop .photo.developed img { filter: none; }
-
-  /* 12 · Going dark, the aura dims like dusk before the dissolve */
-  .dusk .aura img { filter: brightness(.55) saturate(.6); transition: filter .5s ease; }
 
   /* 10 · First visit: the caret holds a beat before typing (JS), the gallery waits for the first word */
 }
