@@ -718,10 +718,8 @@ a.cta:hover { opacity: .6; }
   .vert .gcard--text-left .gcard__img { left: auto; right: var(--vd-x); }
   .vert .gcard:not(.gcard--me) .gcard__body { width: 325px; height: 352px; justify-content: space-between; }
   .vert .gcard__collab { display: block; }
-  .vert .gcard__collab .collab { gap: 7.5px; }
-  .vert .gcard__collab .collab__logo { width: 40px !important; height: 40px !important; }
-  .vert .gcard__collab .collab__x { width: 25px; height: 25px; }
-  .vert .gcard__collab .collab__x img { width: 15px; height: 15px; }
+  /* The collab row is the case-study header's, scaled as one unit so each mark keeps its own proportions */
+  .vert .gcard__collab .collab { zoom: .625; }
   .vert .gcard:not(.gcard--me) .gcard__text { text-align: left; }
   .vert .gcard:not(.gcard--me) .gcard__btn { height: 67px; border-radius: 24px; }
   .vert .gcard--me { height: 400px; padding: 24px; align-items: center; --holo-w: 841px; }
