@@ -582,6 +582,10 @@ a.cta:hover { opacity: .6; }
 .switch__bars--rows { flex-direction: column; }
 .switch__bars--rows i { width: 24px; height: 12px; }
 .switch a[aria-current] i { background: var(--neutral-paper); }
+/* Dark: black glass, the current option on the blue-violet gradient, every bar white (as in the design's dark Home) */
+[data-theme="dark"] .switch { background: var(--neutral-paper-a12); }
+[data-theme="dark"] .switch a[aria-current] { background: linear-gradient(136deg, #4776E6 0%, #8E54E9 100%) !important; }
+[data-theme="dark"] .switch__bars i, [data-theme="dark"] .switch a[aria-current] i { background: var(--neutral-white); }
 
 /* ---------- Page shells ---------- */
 .home-main, .vert-main { padding: 8px; }
