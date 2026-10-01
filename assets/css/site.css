@@ -233,12 +233,9 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   white-space: nowrap;
   transition: opacity .25s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1);
 }
-.pill:hover { opacity: .8; }
-.pill:active { transform: translateY(2px); opacity: .5; }
 .pill__arrow { width: 16px; height: 8px; }
 .sep { width: 24px; height: 24px; flex: none; }
 .icon-btn { width: 48px; height: 48px; flex: none; display: grid; place-items: center; border-radius: 999px; transition: opacity .25s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1); }
-.icon-btn:hover { opacity: .6; }
 .icon-btn img { width: 48px; height: 48px; }
 
 .chip {
@@ -268,7 +265,6 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   color: var(--neutral-ink);
   transition: opacity .25s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1);
 }
-.viewall__btn:hover { opacity: .8; }
 .viewall__btn img { width: 38px; height: 39px; }
 .viewall__menu {
   position: absolute; left: 50%; top: 50%; translate: -50% -50%;
@@ -282,7 +278,6 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
 .viewall.is-open .viewall__menu { opacity: 1; scale: 1; pointer-events: auto; }
 .viewall.is-open .viewall__btn { opacity: 0; }
 .viewall__menu a { width: 48px; height: 48px; border-radius: 999px; overflow: hidden; transition: opacity .25s ease; }
-.viewall__menu a:hover { opacity: .6; }
 .viewall__menu img { width: 48px; height: 48px; }
 /* Navs docked at the bottom of the screen open the menu upward so it stays on screen. */
 .mnav .viewall__menu, .tnav .viewall__menu, .bar .viewall__menu, .panel .viewall__menu { top: auto; bottom: 0; translate: -50% 0; transform-origin: 50% 100%; }
@@ -333,7 +328,6 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em;
   transition: opacity .25s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1);
 }
-a.cta:hover { opacity: .6; }
 .cta img { width: 14.5px; height: 14.5px; }
 .cta--soon { background: var(--tint); color: var(--brand-a50); outline: 2px dashed var(--tint-strong); outline-offset: -2px; }
 .cta--soon img { display: none; }
@@ -423,7 +417,6 @@ a.cta:hover { opacity: .6; }
   font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em;
   transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), opacity .25s ease;
 }
-.next__card:hover { opacity: .6; }
 .next__card--prev { flex-direction: row; }
 .next__arrow { width: 12px; height: 6px; flex: none; }
 .next__arrow--prev { rotate: 90deg; }
@@ -566,7 +559,6 @@ a.cta:hover { opacity: .6; }
   height: 64px; padding: 0 24px; border-radius: 999px;
   transition: opacity .25s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1);
 }
-.cases:hover { opacity: .7; }
 .cases__label { -webkit-background-clip: text; background-clip: text; color: transparent; font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
 .cases img { width: 24px; height: 24px; }
 .switch {
@@ -574,7 +566,6 @@ a.cta:hover { opacity: .6; }
   background: var(--neutral-ink-a12); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
 }
 .switch a { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 999px; transition: opacity .25s ease; }
-.switch a:not([aria-current]):hover { opacity: .6; }
 .switch__bars { display: flex; gap: 2px; }
 .switch__bars i { display: block; width: 12px; height: 24px; border-radius: 2px; background: var(--neutral-ink-a50); }
 .switch__bars--cols { align-items: flex-start; }
@@ -616,7 +607,6 @@ a.cta:hover { opacity: .6; }
   background: var(--tint-sm, var(--tint)); color: var(--brand);
   transition: opacity .25s ease;
 }
-.gcard:hover { opacity: .8; }
 .gcard__img {
   position: absolute; z-index: -1; max-width: none; object-fit: cover;
   left: var(--sm-x); top: var(--sm-y); width: var(--sm-w); height: var(--sm-hh);
@@ -794,8 +784,8 @@ a.cta:hover { opacity: .6; }
   .m-lean .gallery .gcard__img { rotate: var(--lean, 0deg); translate: var(--lag-x, 0px) var(--lag-y, 0px); }
 
   /* 11 · Every mockup pulls into focus as it arrives */
-  .m-focus .cs-hero.is-in img { animation: mock-focus 1.2s cubic-bezier(.22, 1, .36, 1) .3s both; }
-  .js.m-focus .gcard.is-in .gcard__img { animation: mock-focus 1.2s cubic-bezier(.22, 1, .36, 1) calc(var(--appear-delay, 0s) + .15s) both; }
+  .m-focus .cs-hero.is-in img { animation: mock-focus 1.2s cubic-bezier(.22, 1, .36, 1) .3s backwards; }
+  .js.m-focus .gcard.is-in .gcard__img { animation: mock-focus 1.2s cubic-bezier(.22, 1, .36, 1) calc(var(--appear-delay, 0s) + .15s) backwards; }
   @keyframes mock-focus { from { filter: blur(14px); scale: 1.04; } to { filter: blur(0); scale: 1; } }
 }
 
@@ -868,3 +858,36 @@ a.cta:hover { opacity: .6; }
 .lab input { accent-color: var(--brand-instagram-solid); }
 .lab p { margin: 8px 0 0; color: var(--neutral-ink-a50); }
 .lab button { margin-top: 8px; font: inherit; color: var(--neutral-ink-a50); text-decoration: underline; }
+
+/* =====================================================================
+   Hover: a slight fade on every button, card and mockup.
+   Buttons also nudge their arrow; cards and heroes let their mockup drift a little closer.
+   Pointer devices only; no scaling of buttons or cards themselves.
+   ===================================================================== */
+/* Once an element has finished arriving, its own transitions take over from the entrance timing (JS adds .settled) */
+.js [data-appear].is-in.settled, .js.m-settle .gallery .gcard[data-appear].is-in.settled { transition: opacity .4s ease, transform .6s cubic-bezier(.22, 1, .36, 1); }
+
+.pill, .icon-btn, a.cta, .cases, .viewall__btn, .viewall__menu a, .switch a, .next__card,
+.gcard, .cs-card, .cs-hero, .logo-tile, .photo, .cv-sheet, .chip { transition: opacity .4s ease; }
+.pill__arrow, a.cta img, .next__arrow { transition: translate .45s cubic-bezier(.22, 1, .36, 1); }
+.gcard__img, .cs-hero img, .photo img, .cv-sheet img { transition: scale .8s cubic-bezier(.22, 1, .36, 1), filter 1.6s cubic-bezier(.22, 1, .36, 1); }
+
+@media (hover: hover) {
+  /* Buttons */
+  .pill:hover, .icon-btn:hover, a.cta:hover, .js a.cta.is-in:hover, .cases:hover, .viewall__btn:hover, .switch a:not([aria-current]):hover { opacity: .72; }
+  .viewall__menu a:hover { opacity: .72; }
+  .pill:active { transform: none; opacity: .55; }
+  /* Cards */
+  .next__card:hover, .js .next__card.is-in:hover { opacity: .78; }
+  .gcard:hover, .js .gcard.is-in:hover { opacity: .86; }
+  .cs-card:hover, .cs-hero:hover, .logo-tile:hover, .photo:hover, .cv-sheet:hover,
+  .js :is(.cs-card, .cs-hero, .logo-tile, .cv-sheet).is-in:hover { opacity: .9; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .pill:hover .pill__arrow { translate: -3px 0; }
+  a.cta:hover img { translate: 3px 0; }
+  .next__card:hover .next__arrow--next { translate: 3px 0; }
+  .next__card:hover .next__arrow--prev { translate: -3px 0; }
+  .gcard:hover .gcard__img { scale: 1.025; }
+  .cs-hero:hover img, .photo:hover img, .cv-sheet:hover img { scale: 1.02; }
+}

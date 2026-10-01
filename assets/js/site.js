@@ -57,7 +57,12 @@
       cards.forEach(function (el, k) { el.style.setProperty('--appear-delay', (base + k * 0.12) + 's'); });
       if (cards.length) window.__firstDone = true;
       entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+        if (en.isIntersecting) {
+          var el = en.target;
+          el.classList.add('is-in'); io.unobserve(el);
+          var done = function (ev) { if (ev.target === el && ev.propertyName === 'opacity') { el.classList.add('settled'); el.removeEventListener('transitionend', done); } };
+          el.addEventListener('transitionend', done);
+        }
       });
     }, { rootMargin: '0px 0px -5% 0px', threshold: 0.05 });
     appear.forEach(function (el) { io.observe(el); });
