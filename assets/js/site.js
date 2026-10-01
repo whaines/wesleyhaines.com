@@ -56,6 +56,11 @@
       var base = root.classList.contains('first-visit') && !window.__firstDone ? 1.8 : 0;
       cards.forEach(function (el, k) { el.style.setProperty('--appear-delay', (base + k * 0.12) + 's'); });
       if (cards.length) window.__firstDone = true;
+      // Read.me logo tiles arrive the same way, a little quicker since there are ten of them.
+      entries.filter(function (en) { return en.isIntersecting && en.target.classList.contains('logo-tile'); })
+        .map(function (en) { return en.target; })
+        .sort(function (a, b) { var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect(); return (ra.top - rb.top) || (ra.left - rb.left); })
+        .forEach(function (el, k) { el.style.setProperty('--appear-delay', (k * 0.07) + 's'); });
       entries.forEach(function (en) {
         if (en.isIntersecting) {
           var el = en.target;
