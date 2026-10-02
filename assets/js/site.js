@@ -32,15 +32,34 @@
   document.querySelectorAll('[data-viewall]').forEach(function (el) {
     var btn = el.querySelector('button');
     var timer;
-    function close() { el.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); }
+    // In flow (the CSS sets --viewall-flow), ease the box from one size to the other so the things beside it glide rather than jump.
+    function toggle(open) {
+      if (el.classList.contains('is-open') === open) return;
+      var flow = getComputedStyle(el).getPropertyValue('--viewall-flow').trim() === '1';
+      if (!flow || reduceMotion) { el.classList.toggle('is-open', open); return; }
+      var a = el.getBoundingClientRect();
+      el.style.transition = 'none'; el.style.width = ''; el.style.height = '';
+      el.classList.toggle('is-open', open);
+      el.classList.add('is-sizing');
+      var b = el.getBoundingClientRect();
+      el.style.width = a.width + 'px'; el.style.height = a.height + 'px';
+      el.offsetWidth;
+      el.style.transition = 'width .5s cubic-bezier(.22, 1, .36, 1), height .5s cubic-bezier(.22, 1, .36, 1)';
+      el.style.width = b.width + 'px'; el.style.height = b.height + 'px';
+      clearTimeout(el._sz);
+      el._sz = setTimeout(function () { el.style.transition = el.style.width = el.style.height = ''; el.classList.remove('is-sizing'); }, 520);
+    }
+    function close() { toggle(false); btn.setAttribute('aria-expanded', 'false'); }
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
-      el.classList.add('is-open');
+      toggle(true);
       btn.setAttribute('aria-expanded', 'true');
       clearTimeout(timer);
       timer = setTimeout(close, 4000);
     });
     el.addEventListener('mouseenter', function () { clearTimeout(timer); });
+    el.addEventListener('focusin', function () { clearTimeout(timer); });
+    el.addEventListener('focusout', function (e) { if (!el.contains(e.relatedTarget)) close(); });
     el.addEventListener('mouseleave', function () { if (el.classList.contains('is-open')) timer = setTimeout(close, 1200); });
     document.addEventListener('click', function (e) { if (!el.contains(e.target)) close(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
@@ -122,19 +141,25 @@
     setTimeout(tick, root.classList.contains('first-visit') ? 1400 : 400);
   });
 
+  // Animated text: screen readers get the sentence once; the animated pieces sit in one hidden wrapper.
+  function spoken(el, text) {
+    el.textContent = '';
+    var sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = text;
+    var vis = document.createElement('span'); vis.setAttribute('aria-hidden', 'true');
+    el.appendChild(sr); el.appendChild(vis);
+    return vis;
+  }
+
   /* ---------- Letter-by-letter reveal ---------- */
   document.querySelectorAll('[data-letters]').forEach(function (el) {
     if (reduceMotion) return;
-    var text = el.textContent;
-    el.setAttribute('aria-label', text);
-    el.textContent = '';
+    var text = el.textContent, vis = spoken(el, text);
     text.split('').forEach(function (ch, k) {
       var s = document.createElement('span');
       s.className = 'letter';
-      s.setAttribute('aria-hidden', 'true');
       s.style.animationDelay = (0.1 + k * 0.05) + 's';
       s.textContent = ch;
-      el.appendChild(s);
+      vis.appendChild(s);
     });
   });
 
@@ -202,16 +227,14 @@
   /* ---------- Lab 2 · 3: the framing question arrives word by word ---------- */
   if (on('words')) {
     document.querySelectorAll('.cs-header__question').forEach(function (q) {
-      var text = q.textContent;
-      q.setAttribute('aria-label', text);
-      q.textContent = '';
+      var text = q.textContent, vis = spoken(q, text);
       text.split(/(\s+)/).forEach(function (part, k) {
-        if (/^\s+$/.test(part)) { q.appendChild(document.createTextNode(part)); return; }
+        if (/^\s+$/.test(part)) { vis.appendChild(document.createTextNode(part)); return; }
         var w = document.createElement('span');
-        w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+        w.className = 'w';
         w.style.animationDelay = (0.35 + (k / 2) * 0.045).toFixed(3) + 's';
         w.textContent = part;
-        q.appendChild(w);
+        vis.appendChild(w);
       });
     });
   }
@@ -292,4 +315,192 @@ try { localStorage.setItem('visited', '1'); } catch (e) {}
   });
   panel.querySelector('[data-lab-reset]').addEventListener('click', function () { store('visited', null); location.reload(); });
   panel.querySelector('[data-lab-close]').addEventListener('click', function () { store('motion-lab', null); panel.remove(); });
+})();
+
+/* ---------- Services: inquiry form ----------
+   Sends the answers straight to Wes's inbox as a markdown email through FormSubmit (the site has no server).
+   If sending fails, the visitor can fall back to their own mail app with the same message. */
+(function () {
+  var form = document.getElementById('inquiry-form');
+  if (!form) return;
+  form.noValidate = true;
+  var TO = 'ahaines90@gmail.com';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (s, r) { return (r || form).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || form).querySelectorAll(s)); };
+  var body = $('.svc-form__body'), errors = $('#inquiry-errors'), done = $('#inquiry-done');
+  var status = $('#inquiry-status'), preview = $('#inquiry-preview'), details = $('#f-details');
+  var say = function (msg) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 30); };
+  var val = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  var LINK = /^(https?:\/\/)?[^\s\/.]+(\.[^\s\/.]+)+(\/\S*)?$/i;
+
+  var RULES_UNORDERED = [
+    { id: 'f-details', name: 'details', check: function (v) {
+      if (!v) return 'Tell me a little about the project.';
+      if (v.length < 20) return 'Add a bit more, at least 20 characters.';
+    } },
+    { id: 'f-link', name: 'link', check: function (v) { if (v && !LINK.test(v)) return 'Enter a link like company.com, or leave this blank.'; } },
+    { id: 'f-name', name: 'name', check: function (v) { if (!v) return 'Enter your name.'; } },
+    { id: 'f-company', name: 'company', check: function (v) { if (!v) return 'Enter your company or project.'; } },
+    { id: 'f-email', name: 'email', check: function (v) {
+      if (!v) return 'Enter your email so I can reply.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return 'Enter an email like you@company.com.';
+    } }
+  ];
+  var RULES = ['f-name', 'f-company', 'f-email', 'f-link', 'f-details'].map(function (id) { return RULES_UNORDERED.filter(function (r) { return r.id === id; })[0]; });
+  var tried = false;
+
+  function setError(rule, msg) {
+    var input = document.getElementById(rule.id), out = document.getElementById(rule.id + '-error');
+    if (msg) { input.setAttribute('aria-invalid', 'true'); out.innerHTML = '<span class="sr-only">Error: </span>' + msg; }
+    else { input.removeAttribute('aria-invalid'); out.textContent = ''; }
+  }
+  function renderSummary(list) {
+    if (!list.length) { errors.hidden = true; errors.innerHTML = ''; return; }
+    errors.innerHTML = '<h3 class="svc-errors__title" id="inquiry-errors-title">' + (list.length === 1 ? '1 thing to fix' : list.length + ' things to fix') + '</h3>'
+      + '<ul role="list">' + list.map(function (e) { return '<li><a class="svc-link" href="#' + e.rule.id + '">' + e.msg + '</a></li>'; }).join('') + '</ul>';
+    errors.hidden = false;
+  }
+  function validate() {
+    var list = [];
+    RULES.forEach(function (r) { var m = r.check(val(r.id)); setError(r, m); if (m) list.push({ rule: r, msg: m }); });
+    return list;
+  }
+  // After a failed submit, fields re-check as they change: an error can clear or change its message, but no new error appears while typing.
+  RULES.forEach(function (r) {
+    var el = document.getElementById(r.id);
+    var recheck = function () {
+      if (!tried || el.getAttribute('aria-invalid') !== 'true') return;
+      var m = r.check(val(r.id)) || null;
+      if (m !== document.getElementById(r.id + '-error').textContent.replace(/^Error: /, '')) {
+        setError(r, m);
+        renderSummary(RULES.filter(function (x) { return document.getElementById(x.id).getAttribute('aria-invalid') === 'true'; })
+          .map(function (x) { return { rule: x, msg: document.getElementById(x.id + '-error').textContent.replace(/^Error: /, '') }; }));
+      }
+    };
+    el.addEventListener('input', recheck);
+    el.addEventListener('blur', recheck);
+  });
+  errors.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    e.preventDefault();
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    el.focus({ preventScroll: true });
+    el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  // Character count near the limit; screen readers only hear the thresholds.
+  var count = $('#f-details-count'), live = $('#f-details-live'), lastLive = '';
+  details.addEventListener('input', function () {
+    var n = details.value.length;
+    count.textContent = n >= 800 ? n.toLocaleString() + ' of 1,000 characters' : '';
+    var msg = n >= 1000 ? 'No characters left' : n >= 900 ? '100 characters left' : '';
+    if (msg !== lastLive) { live.textContent = msg; lastLive = msg; }
+  });
+
+  var ENDPOINT = 'https://formsubmit.co/ajax/' + TO;
+  var submit = $('.svc-submit');
+
+  // The email Wes receives: markdown, readable as plain text in any mail app.
+  function compose() {
+    var radio = function (n) { var r = $('input[name="' + n + '"]:checked'); return r ? r.value : ''; };
+    var v = { name: val('f-name'), email: val('f-email'), company: val('f-company'), link: val('f-link'), budget: val('f-budget'),
+              scope: radio('Scope'), timing: radio('Timing'), details: val('f-details').replace(/\r\n?/g, '\n') };
+    var row = function (k, x) { return '**' + k + ':** ' + (x || '—'); };
+    var md = ['## New project inquiry', '',
+      row('Name', v.name), row('Email', v.email), row('Company', v.company), row('Link', v.link), row('Budget', v.budget),
+      row('Scope', v.scope), row('Timing', v.timing), '',
+      '### Project', '', v.details, '', '---', '_Sent from wesleyhaines.com/services_'].join('\n');
+    return { v: v, subject: 'Project inquiry — ' + (v.company || v.name), md: md };
+  }
+  var mailto = function (subject, text) { return 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text); };
+
+  function show(state, m) {
+    body.hidden = true; errors.hidden = true; done.hidden = false;
+    $$('[data-done]', done).forEach(function (el) { el.hidden = el.getAttribute('data-done') !== state; });
+    var title = $('#inquiry-done-title');
+    title.textContent = state === 'sent' ? 'Sent' : 'Not sent yet';
+    if (state === 'sent') $('[data-sent-to]', done).textContent = m.v.email;
+    else { $('[data-reopen]', done).href = mailto(m.subject, m.md); preview.value = 'To: ' + TO + '\nSubject: ' + m.subject + '\n\n' + m.md; }
+    title.focus({ preventScroll: true });
+    title.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (submit.disabled) return;
+    tried = true;
+    var list = validate();
+    renderSummary(list);
+    if (list.length) { errors.focus({ preventScroll: true }); errors.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); return; }
+    if ($('input[name="_honey"]').value) return;   // bots fill the hidden field; people never see it
+    var m = compose();
+    submit.disabled = true; submit.textContent = 'Sending…'; say('Sending your inquiry.');
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ _subject: m.subject, _template: 'basic', _captcha: 'false', name: m.v.name, email: m.v.email, message: m.md })
+    }).then(function (r) { return r.json().then(function (j) { if (!r.ok || String(j.success) === 'false') throw new Error(j.message || r.status); }); })
+      .then(function () { show('sent', m); form.reset(); }, function () { show('failed', m); })
+      .then(function () { submit.disabled = false; submit.textContent = 'Submit'; });
+  });
+
+  var copyTimer;
+  done.addEventListener('click', function (e) {
+    var copy = e.target.closest('[data-copy]'), edit = e.target.closest('[data-edit]');
+    if (copy) {
+      var fallback = function () {
+        $('.svc-done__preview', done).hidden = false;
+        preview.focus(); preview.select();
+        say('Your message is below and selected. Press Ctrl+C or ⌘+C to copy it.');
+      };
+      if (!navigator.clipboard || !navigator.clipboard.writeText) { fallback(); return; }
+      navigator.clipboard.writeText(preview.value).then(function () {
+        clearTimeout(copyTimer);
+        copy.textContent = 'Copied';
+        copyTimer = setTimeout(function () { copy.textContent = 'Copy message'; }, 2000);
+        say('Copied. Paste it into a new email to ' + TO + '.');
+      }, fallback);
+    }
+    if (edit) {
+      done.hidden = true; body.hidden = false;
+      $('.svc-done__preview', done).hidden = true;
+      $('#f-name').focus();
+    }
+  });
+})();
+
+/* ---------- Services: headline stickers cycle through every case-study mockup ----------
+   Each slot steps through the same list from its own starting point, a beat apart, so no two show the same mockup.
+   Images load just before their turn; slots rest while off screen, in a hidden tab, or under reduced motion. */
+(function () {
+  var slots = [].slice.call(document.querySelectorAll('[data-rotor]'));
+  if (!slots.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var PERIOD = 3200, visible = true;
+  slots.forEach(function (slot, n) {
+    var list = JSON.parse(slot.getAttribute('data-rotor')), i = +slot.getAttribute('data-start') || 0;
+    var imgs = {}; imgs[i] = slot.querySelector('img');
+    function load(k) {
+      if (imgs[k]) return Promise.resolve(imgs[k]);
+      var im = new Image(); im.alt = ''; im.decoding = 'async'; im.src = list[k];
+      imgs[k] = im; slot.appendChild(im);
+      return (im.decode ? im.decode() : Promise.resolve()).then(function () { return im; }, function () { return im; });
+    }
+    function step() {
+      if (!visible || document.hidden) return;
+      var next = (i + 1) % list.length;
+      load(next).then(function (im) {
+        imgs[i].classList.remove('is-on');
+        im.classList.add('is-on');
+        i = next;
+        load((i + 1) % list.length);   // warm the one after
+      });
+    }
+    load((i + 1) % list.length);
+    setTimeout(function () { setInterval(step, PERIOD); }, 1200 + n * (PERIOD / slots.length));
+  });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(slots[0].closest('h1') || slots[0]);
+  }
 })();

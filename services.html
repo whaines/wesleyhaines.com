@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Services — Wesley Haines - Product Designer</title>
+<meta name="description" content="Work with Wesley Haines, a product designer in New York who builds products and services using strategy, visuals, and code.">
+<meta property="og:title" content="Services — Wesley Haines - Product Designer">
+<meta property="og:description" content="Work with Wesley Haines, a product designer in New York who builds products and services using strategy, visuals, and code.">
+<meta property="og:image" content="https://wesleyhaines.com/assets/img/social.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.png" sizes="48x48">
+<link rel="icon" href="assets/icons/wes-memoji-b1b0f7.svg" type="image/svg+xml">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.dataset.theme = t;
+    document.documentElement.classList.add('js');
+    // Motion effects (each is also off for prefers-reduced-motion, in CSS and site.js).
+    ['vt', 'drift', 'parallax', 'draw', 'wipe', 'hello', 'settle', 'lean', 'focus'].forEach(function (f) {
+      document.documentElement.classList.add('m-' + f);
+    });
+    // Motion Lab 2 studies: on unless switched off in the lab panel (?lab).
+    var labOff = [];
+    try { labOff = JSON.parse(localStorage.getItem('motion-lab-off') || '[]'); } catch (e) {}
+    ['tblur', 'italic', 'words', 'chapters', 'bleed', 'snap', 'first', 'develop'].forEach(function (f) {
+      if (labOff.indexOf(f) < 0) document.documentElement.classList.add('m-' + f);
+    });
+    try {
+      if (document.documentElement.classList.contains('m-first') && !localStorage.getItem('visited')) document.documentElement.classList.add('first-visit');
+    } catch (e) {}
+    // Page-to-page continuity: pair the opened gallery card with the case study's color and first mockup.
+    var root = document.documentElement;
+    var page = function (url) { var p = new URL(url, location.href).pathname.replace(/\/$/, '').split('/').pop().replace(/\.html$/, ''); return p === 'index' ? '' : p; };
+    var isGallery = function (p) { return p === '' || p === 'wesleyhaines.com' || p === 'vert'; };
+    var ss = function (k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} };
+    addEventListener('pagereveal', function (e) {
+      if (!e.viewTransition) return;
+      if (!root.classList.contains('m-vt') || matchMedia('(prefers-reduced-motion: reduce)').matches) { e.viewTransition.skipTransition(); return; }
+      var here = page(location.href), to = ss('vtTo'), from = ss('vtFrom');
+      ss('vtTo', null); ss('vtFrom', null);
+      if (to && to === here) { root.classList.add('vt-pair'); }
+      else if (from && isGallery(here)) {
+        var card = document.querySelector('.gcard[href="' + from + '"]');
+        if (card) card.classList.add('vt-active');
+      }
+      e.viewTransition.finished.finally(function () {
+        root.classList.remove('vt-pair');
+        document.querySelectorAll('.gcard.vt-active').forEach(function (c) { c.classList.remove('vt-active'); });
+      });
+    });
+    addEventListener('pageswap', function (e) {
+      if (!e.viewTransition || !e.activation || !root.classList.contains('m-vt')) return;
+      var here = page(location.href), dest = page(e.activation.entry.url);
+      if (!isGallery(here) && isGallery(dest)) { root.classList.add('vt-pair'); ss('vtFrom', here); }
+    });
+  })();
+</script>
+<link rel="preload" href="assets/fonts/Inter-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/InstrumentSerif-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SE8W22F70B"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('consent', 'default', { ad_storage: 'denied', analytics_storage: 'denied' });
+  gtag('js', new Date());
+  gtag('config', 'G-SE8W22F70B');
+</script>
+<script defer src="assets/js/site.js"></script>
+</head>
+<body class="case case--services" style="--brand: var(--neutral-ink); --brand-a50: var(--neutral-ink-a50); --tint: var(--brand-readme-a16); --tint-strong: var(--brand-readme-a16)">
+<a class="sr-only skip" href="#inquiry">Skip to inquiry form</a>
+<nav class="topnav" aria-label="Site">
+  <div class="topnav__left">
+    <a class="topnav__back icon-btn" href="./" aria-label="Home"><img class=" for-light" src="assets/icons/frame-ae97b8.svg" alt="" width="48" height="48"><img class=" for-dark" src="assets/icons/frame-624ea6.svg" alt="" width="48" height="48" aria-hidden="true"></a>
+    <a class="pill pill--home" href="./"><img class="pill__arrow for-light" src="assets/icons/line-85daa0.svg" alt="" width="16" height="8" style="rotate:90deg"><img class="pill__arrow for-dark" src="assets/icons/line-3ba55b.svg" alt="" width="16" height="8" aria-hidden="true" style="rotate:90deg">Home</a>
+    <img class="sep for-light" src="assets/icons/rectangle-67ef25.svg" alt="" width="24" height="24"><img class="sep for-dark" src="assets/icons/rectangle-41bf4b.svg" alt="" width="24" height="24" aria-hidden="true">
+    <span class="chip topnav__chip"><img class=" for-light" src="assets/img/wes-memoji-d531f8.webp" alt="" width="48" height="48"><img class=" for-dark" src="assets/img/wes-memoji-b95afc.webp" alt="" width="48" height="48" aria-hidden="true"><span class="chip__text">Wesley Haines<br>Product Designer</span></span>
+  </div>
+  <div class="topnav__right">
+    
+    <div class="viewall" data-viewall><button class="viewall__btn" type="button" aria-expanded="false" aria-controls="viewall-menu"><span>View All</span><img class=" for-light" src="assets/img/group-dd6ff8.webp" alt="" width="38" height="39"><img class=" for-dark" src="assets/img/group-40901b.webp" alt="" width="38" height="39" aria-hidden="true"></button><div class="viewall__menu" id="viewall-menu"><a href="etsy" aria-label="Etsy"><img class=" for-light" src="assets/icons/ig-150985.svg" alt="Etsy" width="48" height="48"><img class=" for-dark" src="assets/icons/ig-42374a.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="instagram" aria-label="Instagram"><img class=" for-light" src="assets/icons/ig-c9ac03.svg" alt="Instagram" width="48" height="48"><img class=" for-dark" src="assets/icons/ig-82ad7b.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="duolingo" aria-label="Duolingo"><img class=" for-light" src="assets/icons/duo-c0628c.svg" alt="Duolingo" width="48" height="48"><img class=" for-dark" src="assets/icons/duo-1f6d3a.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="spotify" aria-label="Spotify"><img class=" for-light" src="assets/icons/spotify-48fa72.svg" alt="Spotify" width="48" height="48"><img class=" for-dark" src="assets/icons/spotify-da019b.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="nike" aria-label="Nike"><img class=" for-light" src="assets/icons/nike-699ecb.svg" alt="Nike" width="48" height="48"><img class=" for-dark" src="assets/icons/nike-d9c029.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="capitalone" aria-label="Capital One"><img class=" for-light" src="assets/icons/capone-ffffd5.svg" alt="Capital One" width="48" height="48"><img class=" for-dark" src="assets/icons/capone-6927c2.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="google" aria-label="Google"><span style="display:grid;place-items:center;width:48px;height:48px;background:#fff;border-radius:999px"><img src="assets/img/google-logo-729d6a.webp" alt="Google" width="32" height="32"></span></a><a href="playstation" aria-label="PlayStation"><img class=" for-light" src="assets/icons/ps-33aac9.svg" alt="PlayStation" width="48" height="48"><img class=" for-dark" src="assets/icons/ps-278edf.svg" alt="" width="48" height="48" aria-hidden="true"></a></div></div>
+    <img class="sep for-light" src="assets/icons/rectangle-67ef25.svg" alt="" width="24" height="24"><img class="sep for-dark" src="assets/icons/rectangle-41bf4b.svg" alt="" width="24" height="24" aria-hidden="true">
+    <button class="icon-btn" type="button" data-theme-toggle aria-label="Switch between light and dark mode"><img class=" for-light" src="assets/icons/frame-11fa85.svg" alt="" width="48" height="48"><img class=" for-dark" src="assets/icons/frame-4ef0a3.svg" alt="" width="48" height="48" aria-hidden="true"></button>
+  </div>
+</nav>
+<main class="page">
+  <div class="stack">
+    <header class="cs-header svc-hero">
+      <div class="collab" data-appear style="--appear-scale:.9"><img style="width:136px;height:80px" class="collab__logo for-light" src="assets/img/frame-20d020.webp" alt="" width="136" height="80"><img style="width:136px;height:80px" class="collab__logo for-dark" src="assets/img/frame-3579ea.webp" alt="" width="136" height="80" aria-hidden="true"></div>
+      <h1 class="cs-header__title svc-hero__title" data-appear style="--appear-scale:.9;--appear-delay:.1s">
+        <span class="svc-line"><span>Building products</span> <span class="svc-sticker svc-sticker--duolingo svc-rotor" data-rotor='["assets/img/etsy-card-ec46f3-sm.webp", "assets/img/instagram-card-593650-sm.webp", "assets/img/duolingo-card-1a8abf-sm.webp", "assets/img/spotify-card-c0eeb6-sm.webp", "assets/img/nike-card-ea07a4-sm.webp", "assets/img/capitalone-card-fe28b8-sm.webp", "assets/img/google-card-2b71ca-sm.webp", "assets/img/playstation-card-10b65d-sm.webp", "assets/img/etsy-web-db1f06-sm.webp", "assets/img/insta-hero-2-bdc60c-sm.webp", "assets/img/duo-hero-2-0b87b6-sm.webp", "assets/img/spotify-hero-2-3bd961-sm.webp", "assets/img/nike-hero-2-b2ad74-sm.webp", "assets/img/cap-hero-2-11c6de-sm.webp", "assets/img/google-hero-2-12a764-sm.webp", "assets/img/ps-hero-2-8f196f-sm.webp"]' data-start="2"><img class="is-on" src="assets/img/duolingo-card-1a8abf-sm.webp" alt="" decoding="async"></span></span>
+        <span class="svc-line"><span>and services</span> <span class="svc-sticker svc-sticker--etsy svc-rotor" data-rotor='["assets/img/etsy-card-ec46f3-sm.webp", "assets/img/instagram-card-593650-sm.webp", "assets/img/duolingo-card-1a8abf-sm.webp", "assets/img/spotify-card-c0eeb6-sm.webp", "assets/img/nike-card-ea07a4-sm.webp", "assets/img/capitalone-card-fe28b8-sm.webp", "assets/img/google-card-2b71ca-sm.webp", "assets/img/playstation-card-10b65d-sm.webp", "assets/img/etsy-web-db1f06-sm.webp", "assets/img/insta-hero-2-bdc60c-sm.webp", "assets/img/duo-hero-2-0b87b6-sm.webp", "assets/img/spotify-hero-2-3bd961-sm.webp", "assets/img/nike-hero-2-b2ad74-sm.webp", "assets/img/cap-hero-2-11c6de-sm.webp", "assets/img/google-hero-2-12a764-sm.webp", "assets/img/ps-hero-2-8f196f-sm.webp"]' data-start="0"><img class="is-on" src="assets/img/etsy-card-ec46f3-sm.webp" alt="" decoding="async"></span> <span>using strategy</span></span>
+        <span class="svc-line"><span class="svc-sticker svc-sticker--spotify svc-rotor" data-rotor='["assets/img/etsy-card-ec46f3-sm.webp", "assets/img/instagram-card-593650-sm.webp", "assets/img/duolingo-card-1a8abf-sm.webp", "assets/img/spotify-card-c0eeb6-sm.webp", "assets/img/nike-card-ea07a4-sm.webp", "assets/img/capitalone-card-fe28b8-sm.webp", "assets/img/google-card-2b71ca-sm.webp", "assets/img/playstation-card-10b65d-sm.webp", "assets/img/etsy-web-db1f06-sm.webp", "assets/img/insta-hero-2-bdc60c-sm.webp", "assets/img/duo-hero-2-0b87b6-sm.webp", "assets/img/spotify-hero-2-3bd961-sm.webp", "assets/img/nike-hero-2-b2ad74-sm.webp", "assets/img/cap-hero-2-11c6de-sm.webp", "assets/img/google-hero-2-12a764-sm.webp", "assets/img/ps-hero-2-8f196f-sm.webp"]' data-start="11"><img class="is-on" src="assets/img/spotify-hero-2-3bd961-sm.webp" alt="" decoding="async"></span> <span>visuals, and code<span class="svc-since"> since 2013</span>.</span> <span class="svc-sticker svc-sticker--tools"><img src="assets/img/tools-8f5bc8.webp" alt="" decoding="async"></span></span>
+      </h1>
+      <p class="cs-header__question svc-hero__intro" data-appear style="--appear-scale:.9;--appear-delay:.2s">For 12+ years, I’ve designed and built digital products using strategy, visuals, and code. Here’s how I can help.</p>
+      <div class="svc-hero__ctas" data-appear style="--appear-delay:.3s">
+        <a class="cta svc-cta svc-cta--inquiry" href="#inquiry">Start an inquiry</a>
+        <a class="cta svc-cta svc-cta--cv" href="cv">CV<svg class="svc-cta__icon" viewBox="0 0 15.4286 18" aria-hidden="true"><path fill="currentColor" d="M13.1406 0H2.28815C1.02188 0 0 1.01225 0 2.25013V15.7499C0 16.9951 1.02186 18 2.28815 18H10.8524C11.051 18 11.2487 17.9254 11.3863 17.7826L15.1992 14.0331C15.3443 13.8895 15.4286 13.7025 15.4286 13.4999V2.24944C15.4286 1.01242 14.3992 0.000146998 13.1404 0.000146998L13.1406 0ZM7.7101 4.12458C8.55677 4.12458 9.23578 4.79968 9.23578 5.62491C9.23578 6.45751 8.55677 7.12524 7.7101 7.12524C6.87093 7.12524 6.18442 6.45751 6.18442 5.62491C6.18525 4.79968 6.87178 4.12458 7.7101 4.12458ZM9.23662 14.6253H3.8104C3.38913 14.6253 3.04797 14.2898 3.04797 13.8756C3.04797 13.4613 3.38916 13.1258 3.8104 13.1258H9.23662C9.65788 13.1258 9.99904 13.4613 9.99904 13.8756C9.99904 14.2898 9.65786 14.6253 9.23662 14.6253ZM11.6123 11.2507H3.8104C3.38913 11.2507 3.04797 10.9151 3.04797 10.5009C3.04797 10.0866 3.38916 9.75114 3.8104 9.75114H11.6123C12.0336 9.75114 12.3747 10.0867 12.3747 10.5009C12.3747 10.9143 12.0336 11.2507 11.6123 11.2507Z"/></svg></a>
+      </div>
+    </header>
+    <div class="svc-body">
+      <div class="caption svc-caption" style="--caption:var(--neutral-ink);--appear-scale:1" data-appear><span class="caption__rule"></span><p class="caption__row"><span>Sr Staff Designer</span><span>Seller Services</span><span>New York, NY</span></p></div>
+      <section class="svc-split" id="inquiry" aria-labelledby="inquiry-title">
+        <aside class="panel svc-panel" aria-label="About Wes" data-appear style="--appear-scale:1;--appear-y:24px"><span class="aura " aria-hidden="true"><img class="for-light" src="assets/img/aura-light-64e9e3-r0.webp" alt=""><img class="for-dark" src="assets/img/aura-dark-59b4be-r180.webp" alt=""></span><div class="panel__top"><span class="pd" data-letters>Product Designer</span></div><div class="panel__bottom"><div class="panel__intro"><a class="panel__me" href="me" aria-label="Read.me"><img class=" for-light" src="assets/img/frame-20d020.webp" alt="" width="136" height="80"><img class=" for-dark" src="assets/img/frame-3579ea.webp" alt="" width="136" height="80" aria-hidden="true"></a><p class="svc-panel__title">Send Inquiry</p><p class="panel__bio">I am a designer from the Bay Area 🌉, went to school in DC 🏛️, started out in LA 🌴, currently based in NYC 🗽</p></div><div class="panel__ctas"><a class="cases " href="https://www.figma.com/proto/clmcOxZFpdiL2QTlswvXhD/%E2%9C%A8-Wes-Case-Studies?page-id=1077%3A13888&amp;node-id=1077-13889&amp;viewport=1416%2C316%2C0.13&amp;t=ZOOauC9a2XdXKpYZ-1&amp;scaling=contain&amp;content-scaling=fixed&amp;starting-point-node-id=1077%3A13889" target="_blank" rel="noopener" style="background:linear-gradient(115deg, rgba(177, 168, 210, 0.200) 0.0%, rgba(90, 132, 209, 0.200) 100.0%)"><span class="cases__label" style="background-image:linear-gradient(102deg, #4776E6 0.0%, #8E54E9 100.0%)">Case Studies</span><img class=" for-light" src="assets/icons/lock-c83b29.svg" alt="" width="24" height="24"><img class=" for-dark" src="assets/icons/lock-872171.svg" alt="" width="24" height="24" aria-hidden="true"></a><span class="panel__sep"><img class="sep for-light" src="assets/icons/rectangle-f98195.svg" alt="" width="24" height="24"><img class="sep for-dark" src="assets/icons/rectangle-17c0ab.svg" alt="" width="24" height="24" aria-hidden="true"></span><div class="viewall" data-viewall><button class="viewall__btn" type="button" aria-expanded="false" aria-controls="viewall-svc"><span>View All</span><img class=" for-light" src="assets/img/group-dd6ff8.webp" alt="" width="38" height="39"><img class=" for-dark" src="assets/img/group-40901b.webp" alt="" width="38" height="39" aria-hidden="true"></button><div class="viewall__menu" id="viewall-svc"><a href="etsy" aria-label="Etsy"><img class=" for-light" src="assets/icons/ig-150985.svg" alt="Etsy" width="48" height="48"><img class=" for-dark" src="assets/icons/ig-42374a.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="instagram" aria-label="Instagram"><img class=" for-light" src="assets/icons/ig-c9ac03.svg" alt="Instagram" width="48" height="48"><img class=" for-dark" src="assets/icons/ig-82ad7b.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="duolingo" aria-label="Duolingo"><img class=" for-light" src="assets/icons/duo-c0628c.svg" alt="Duolingo" width="48" height="48"><img class=" for-dark" src="assets/icons/duo-1f6d3a.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="spotify" aria-label="Spotify"><img class=" for-light" src="assets/icons/spotify-48fa72.svg" alt="Spotify" width="48" height="48"><img class=" for-dark" src="assets/icons/spotify-da019b.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="nike" aria-label="Nike"><img class=" for-light" src="assets/icons/nike-699ecb.svg" alt="Nike" width="48" height="48"><img class=" for-dark" src="assets/icons/nike-d9c029.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="capitalone" aria-label="Capital One"><img class=" for-light" src="assets/icons/capone-ffffd5.svg" alt="Capital One" width="48" height="48"><img class=" for-dark" src="assets/icons/capone-6927c2.svg" alt="" width="48" height="48" aria-hidden="true"></a><a href="google" aria-label="Google"><span style="display:grid;place-items:center;width:48px;height:48px;background:#fff;border-radius:999px"><img src="assets/img/google-logo-729d6a.webp" alt="Google" width="32" height="32"></span></a><a href="playstation" aria-label="PlayStation"><img class=" for-light" src="assets/icons/ps-33aac9.svg" alt="PlayStation" width="48" height="48"><img class=" for-dark" src="assets/icons/ps-278edf.svg" alt="" width="48" height="48" aria-hidden="true"></a></div></div></div></div></aside>
+        <div class="svc-formcard" data-appear style="--appear-scale:1;--appear-y:24px;--appear-delay:.1s">
+        <h2 class="svc-formcard__title" id="inquiry-title">Inquiry</h2>
+        <form class="svc-form" id="inquiry-form" aria-labelledby="inquiry-title" action="https://formsubmit.co/ahaines90@gmail.com" method="post">
+          <input type="hidden" name="_subject" value="Project inquiry">
+          <input type="text" name="_honey" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="svc-errors" id="inquiry-errors" tabindex="-1" aria-labelledby="inquiry-errors-title" hidden></div>
+          <div class="svc-form__body">
+            <div class="svc-form__fields"><div class="field"><label class="field__label" for="f-name">Your name</label><input class="field__input" id="f-name" type="text" name="Name" autocomplete="name" autocapitalize="words" maxlength="100" required aria-describedby="f-name-error"><p class="field__error" id="f-name-error"></p></div><div class="field"><label class="field__label" for="f-company">Your company</label><input class="field__input" id="f-company" type="text" name="Company" autocomplete="organization" maxlength="100" required aria-describedby="f-company-error"><p class="field__error" id="f-company-error"></p></div><div class="field field--full"><label class="field__label" for="f-email">Your email</label><input class="field__input" id="f-email" name="email" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="200" required aria-describedby="f-email-error"><p class="field__error" id="f-email-error"></p></div><div class="field"><label class="field__label" for="f-link">Link <span class="field__opt">(optional)</span></label><p class="field__help" id="f-link-help">A site, a deck, or a Figma file</p><input class="field__input" id="f-link" type="text" name="Link" inputmode="url" autocomplete="url" autocapitalize="none" spellcheck="false" maxlength="300" aria-describedby="f-link-help f-link-error"><p class="field__error" id="f-link-error"></p></div><div class="field"><label class="field__label" for="f-budget">Budget <span class="field__opt">(optional)</span></label><p class="field__help" id="f-budget-help">A rough range is fine</p><input class="field__input" id="f-budget" type="text" name="Budget" maxlength="60" autocomplete="off" aria-describedby="f-budget-help"></div><div class="field field--full"><label class="field__label" for="f-details">Describe your project</label><textarea class="field__input field__input--area" id="f-details" name="Project" rows="6" minlength="20" maxlength="1000" required aria-describedby="f-details-count f-details-error"></textarea><p class="field__help" id="f-details-count" aria-hidden="true"></p><span class="sr-only" id="f-details-live" aria-live="polite"></span><p class="field__error" id="f-details-error"></p></div><fieldset class="field field--full" id="f-scope" aria-describedby="f-scope-help"><legend class="field__label">Scope</legend><p class="field__help" id="f-scope-help">How are you framing the work?</p><div class="choices"><label class="choice"><input class="choice__input" type="radio" name="Scope" value="Concept" checked><span class="choice__label">Concept</span></label><label class="choice"><input class="choice__input" type="radio" name="Scope" value="Building"><span class="choice__label">Building</span></label><label class="choice"><input class="choice__input" type="radio" name="Scope" value="Live product"><span class="choice__label">Live product</span></label><label class="choice"><input class="choice__input" type="radio" name="Scope" value="Needs redesign"><span class="choice__label">Needs redesign</span></label></div></fieldset><fieldset class="field field--full" id="f-timing" aria-describedby="f-timing-help"><legend class="field__label">Timing</legend><p class="field__help" id="f-timing-help">When are you looking to collaborate?</p><div class="choices"><label class="choice"><input class="choice__input" type="radio" name="Timing" value="ASAP" checked><span class="choice__label">ASAP</span></label><label class="choice"><input class="choice__input" type="radio" name="Timing" value="Next 2 weeks"><span class="choice__label">Next 2 weeks</span></label><label class="choice"><input class="choice__input" type="radio" name="Timing" value="Next 2 months"><span class="choice__label">Next 2 months</span></label><label class="choice"><input class="choice__input" type="radio" name="Timing" value="Just exploring"><span class="choice__label">Just exploring</span></label></div></fieldset></div>
+            <button class="svc-submit" type="submit" aria-describedby="submit-help">Submit</button>
+            <p class="sr-only" id="submit-help">Sends your answers to Wes by email.</p>
+          </div>
+          <div class="svc-done" id="inquiry-done" aria-labelledby="inquiry-done-title" hidden>
+            <h3 class="svc-done__title" id="inquiry-done-title" tabindex="-1">Sent</h3>
+            <p data-done="sent">Thanks, your inquiry is in my inbox. I’ll reply to <span data-sent-to></span>.</p>
+            <div class="svc-done__actions" data-done="sent"><button class="pill svc-edit" type="button" data-edit>Close</button></div>
+            <p data-done="failed" hidden>Something went wrong and your inquiry didn’t send. You can open it in your own email app instead, or copy it and send it to <a class="svc-link" href="mailto:ahaines90@gmail.com">ahaines90@gmail.com</a>.</p>
+            <div class="svc-done__actions" data-done="failed" hidden>
+              <a class="cta cta--solid cta--ink" href="mailto:ahaines90@gmail.com" data-reopen>Open in email</a>
+              <button class="cta cta--solid cta--glass" type="button" data-copy>Copy message</button>
+              <button class="pill svc-edit" type="button" data-edit>Edit inquiry</button>
+            </div>
+            <div class="svc-done__preview" hidden>
+              <label class="field__label" for="inquiry-preview">Your message</label>
+              <textarea class="field__input field__input--area" id="inquiry-preview" readonly rows="10"></textarea>
+            </div>
+          </div>
+          <p class="sr-only" id="inquiry-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      </section>
+    </div>
+  </div>
+</main>
+</body>
+</html>
