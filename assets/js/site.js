@@ -405,14 +405,14 @@ try { localStorage.setItem('visited', '1'); } catch (e) {}
   // The email Wes receives: markdown, readable as plain text in any mail app.
   function compose() {
     var radio = function (n) { var r = $('input[name="' + n + '"]:checked'); return r ? r.value : ''; };
-    var v = { name: val('f-name'), email: val('f-email'), company: val('f-company'), link: val('f-link'), budget: val('f-budget'),
+    var v = { interest: val('f-interest'), name: val('f-name'), email: val('f-email'), company: val('f-company'), link: val('f-link'), budget: val('f-budget'),
               scope: radio('Scope'), timing: radio('Timing'), details: val('f-details').replace(/\r\n?/g, '\n') };
     var row = function (k, x) { return '**' + k + ':** ' + (x || '—'); };
     var md = ['## New project inquiry', '',
-      row('Name', v.name), row('Email', v.email), row('Company', v.company), row('Link', v.link), row('Budget', v.budget),
+      row('Interested in', v.interest), row('Name', v.name), row('Email', v.email), row('Company', v.company), row('Link', v.link), row('Budget', v.budget),
       row('Scope', v.scope), row('Timing', v.timing), '',
       '### Project', '', v.details, '', '---', '_Sent from wesleyhaines.com/services_'].join('\n');
-    return { v: v, subject: 'Project inquiry — ' + (v.company || v.name), md: md };
+    return { v: v, subject: 'Project inquiry' + (v.interest ? ': ' + v.interest : '') + ' — ' + (v.company || v.name), md: md };
   }
   var mailto = function (subject, text) { return 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text); };
 
@@ -440,11 +440,32 @@ try { localStorage.setItem('visited', '1'); } catch (e) {}
     fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ _subject: m.subject, _template: 'basic', _captcha: 'false', name: m.v.name, email: m.v.email, message: m.md })
+      body: JSON.stringify({ _subject: m.subject, _template: 'basic', _captcha: 'false', name: m.v.name, email: m.v.email, message: m.md,
+        // The confirmation the sender gets back
+        _autoresponse: 'Hi ' + m.v.name.split(' ')[0] + ',\n\nThanks for reaching out. Your inquiry came through and I’ll reply within 2 business days.\n\nWes\nwesleyhaines.com' })
     }).then(function (r) { return r.json().then(function (j) { if (!r.ok || String(j.success) === 'false') throw new Error(j.message || r.status); }); })
-      .then(function () { show('sent', m); form.reset(); }, function () { show('failed', m); })
+      .then(function () { show('sent', m); form.reset(); setInterest(''); }, function () { show('failed', m); })
       .then(function () { submit.disabled = false; submit.textContent = 'Submit'; });
   });
+
+  // "Ask about this" on an offer card marks the inquiry with that service and brings up the form.
+  var interest = document.querySelector('.svc-interest');
+  function setInterest(name) {
+    $('#f-interest').value = name;
+    interest.hidden = !name;
+    if (name) interest.querySelector('[data-interest-name]').textContent = name;
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[data-service]');
+    if (!a) return;
+    e.preventDefault();
+    setInterest(a.getAttribute('data-service'));
+    if (!done.hidden) { done.hidden = true; body.hidden = false; }
+    document.getElementById('inquiry').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    $('#f-name').focus({ preventScroll: true });
+    say(a.getAttribute('data-service') + ' added to your inquiry.');
+  });
+  interest.querySelector('[data-interest-clear]').addEventListener('click', function () { setInterest(''); $('#f-name').focus(); });
 
   var copyTimer;
   done.addEventListener('click', function (e) {

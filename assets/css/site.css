@@ -613,6 +613,41 @@ html:has(.case--services), .case--services { background: var(--svc-ground); }
 .svc-body { display: flex; flex-direction: column; gap: 40px; }
 .svc-caption .caption__rule { height: 4px; margin: -2px 0; border: 0; border-radius: 2px; background: var(--neutral-ink-a12); opacity: 1; }
 
+/* Offers: four cards in the form card's style (2px hairline, 16px corners, no fill) */
+.svc-offers { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.svc-offer {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 24px;
+  border: 2px solid var(--neutral-ink-a12); border-radius: 16px; color: var(--neutral-ink); scroll-margin-top: 24px;
+}
+.svc-offer__label { font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; color: var(--neutral-ink-a50); }
+.svc-offer__title { font: italic 400 36px/47px var(--font-serif); letter-spacing: -0.04em; }
+.svc-offer__body { max-width: 420px; font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
+.svc-offer__proof { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.svc-proof { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 4px 14px 4px 4px; border-radius: 999px;
+  background: var(--neutral-ink-a12); font: 500 14px/17px var(--font-sans); letter-spacing: -0.03em; color: var(--neutral-ink); transition: opacity .4s ease; }
+.svc-proof__icon { width: 32px; height: 32px; border-radius: 999px; }
+.svc-proof__icon--google { display: grid; place-items: center; background: #fff; }
+.svc-proof__me { width: 54px; height: 32px; margin-left: -2px; }
+.svc-offer__cta { height: 48px; margin-top: auto; padding: 0 20px; color: var(--neutral-ink); }
+.svc-offer__proof { margin-bottom: 12px; }
+@media (hover: hover) { .svc-proof:hover { opacity: .72; } }
+@media (min-width: 800px) {
+  .svc-offers { grid-template-columns: 1fr 1fr; }
+  .svc-offer { gap: 16px; scroll-margin-top: 100px; }
+  .svc-offer__title { font-size: 48px; line-height: 52px; }
+  .svc-offer__body { font-size: 20px; line-height: 24px; }
+  .svc-offer__cta { height: 56px; }
+}
+@media (min-width: 1800px) { .svc-offers { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* "About <service>" marker under the Inquiry title, set by an offer's Ask about this */
+.svc-interest { display: inline-flex; align-items: center; gap: 8px; height: 40px; margin-top: -24px; padding: 0 6px 0 16px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-readme-solid-static) 30%, transparent); font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
+.svc-interest[hidden] { display: none; }
+.svc-interest__clear { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; font-size: 18px; line-height: 1; color: var(--neutral-ink-a50); }
+.svc-interest__clear:hover { color: var(--neutral-ink); }
+@media (min-width: 800px) { .svc-interest { margin-top: 8px; } }
+
 /* Panel (from 1280) beside the card */
 .svc-split { display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 24px; }
 .svc-panel { display: none; }
