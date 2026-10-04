@@ -613,33 +613,6 @@ button.cta { cursor: pointer; }
 .svc-body { display: flex; flex-direction: column; gap: 40px; }
 .svc-caption .caption__rule { height: 4px; margin: -2px 0; border: 0; border-radius: 2px; background: var(--neutral-ink-a12); opacity: 1; }
 
-/* Offers: four cards in the form card's style (2px hairline, 16px corners, no fill) */
-.svc-offers { display: grid; grid-template-columns: 1fr; gap: 12px; }
-.svc-offer {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 24px;
-  border: 2px solid var(--neutral-ink-a12); border-radius: 16px; color: var(--neutral-ink); scroll-margin-top: 24px;
-}
-.svc-offer__label { font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; color: var(--neutral-ink-a50); }
-.svc-offer__title { font: italic 400 36px/47px var(--font-serif); letter-spacing: -0.04em; }
-.svc-offer__body { max-width: 420px; font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
-.svc-offer__proof { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.svc-proof { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 4px 14px 4px 4px; border-radius: 999px;
-  background: var(--neutral-ink-a12); font: 500 14px/17px var(--font-sans); letter-spacing: -0.03em; color: var(--neutral-ink); transition: opacity .4s ease; }
-.svc-proof__icon { width: 32px; height: 32px; border-radius: 999px; }
-.svc-proof__icon--google { display: grid; place-items: center; background: #fff; }
-.svc-proof__me { width: 54px; height: 32px; margin-left: -2px; }
-.svc-offer__cta { height: 48px; margin-top: auto; padding: 0 20px; color: var(--neutral-ink); }
-.svc-offer__proof { margin-bottom: 12px; }
-@media (hover: hover) { .svc-proof:hover { opacity: .72; } }
-@media (min-width: 800px) {
-  .svc-offers { grid-template-columns: 1fr 1fr; }
-  .svc-offer { gap: 16px; scroll-margin-top: 100px; }
-  .svc-offer__title { font-size: 48px; line-height: 52px; }
-  .svc-offer__body { font-size: 20px; line-height: 24px; }
-  .svc-offer__cta { height: 56px; }
-}
-@media (min-width: 1800px) { .svc-offers { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-
 /* "About <service>" marker under the Inquiry title, set by an offer's Ask about this */
 .svc-interest { display: inline-flex; align-items: center; gap: 8px; height: 40px; margin-top: -24px; padding: 0 6px 0 16px; border-radius: 999px;
   background: color-mix(in srgb, var(--brand-readme-solid-static) 30%, transparent); font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
@@ -650,24 +623,15 @@ button.cta { cursor: pointer; }
 
 /* Panel (from 1280) beside the card */
 .svc-split { display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 24px; }
-.svc-panel { display: none; }
+.svc-wall { display: none; }
 @media (min-width: 800px) { .svc-split { scroll-margin-top: 100px; } }
 @media (min-width: 1280px) {
   .svc-split { flex-direction: row; min-height: 1000px; }
-  .svc-split .svc-panel { display: flex; width: auto; flex: 1 1 0; border: 2px solid var(--neutral-ink-a12); border-radius: 12px; }
-  .svc-panel .pd { font: italic 400 36px/47px var(--font-serif); letter-spacing: -0.04em; color: var(--neutral-ink); }
-  .svc-panel .panel__bottom { gap: 40px; }
-  .svc-panel .panel__intro { gap: 24px; }
-  .svc-panel__title { font: italic 400 96px/96px var(--font-serif); letter-spacing: -0.04em; }
-  .svc-panel .panel__bio { max-width: 378px; font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
-  .svc-panel .panel__ctas { flex-direction: row; align-items: center; gap: 12px; }
-  .svc-panel .panel__sep { display: block; }
-  .svc-panel .viewall { --viewall-flow: 1; }
-  .svc-panel .viewall__menu { left: 0; top: auto; bottom: 0; translate: none; transform-origin: 0 100%; }
-  .svc-panel .viewall.is-open .viewall__menu { position: relative; }
-  .svc-panel .viewall.is-open .viewall__btn { position: absolute; left: 0; bottom: 0; }
+  /* Client logos: two columns of four tiles that share the form card's height */
+  .svc-wall { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 12px; flex: 1 1 0; min-width: 0; }
+  .svc-wall .logo-tile { height: auto; min-height: 0; }
 }
-@media (min-width: 1800px) { .svc-split .svc-panel { width: 639px; flex: 0 0 639px; } }
+@media (min-width: 1800px) { .svc-wall { flex: 0 0 639px; } }
 
 /* Inquiry card: title top, 566px field column, submit at the bottom */
 .svc-formcard {
@@ -851,6 +815,16 @@ fieldset.field > legend { margin-bottom: 4px; }
 .gcard__intro { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 325px; max-width: 100%; }
 .gcard__me-logo { width: 85px; height: 50px; }
 .gcard--me .gcard__btn { width: 325px; max-width: 100%; background: #fff; color: #000; }
+/* Services card: the Read.me card's layout over a photo that fades to a soft shadow at the foot, in both themes */
+.gcard--svc { background: #1f2a1c; --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .36)); }
+[data-theme="dark"] .gcard--svc { --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .36)); }
+/* The photo is sharp at the top and melts into a blur behind the text (the design's blur layer, faded in with a mask) */
+.gcard--svc::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(transparent 25%, #000 70%); mask-image: linear-gradient(transparent 25%, #000 70%);
+}
+.gcard__photo { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
 /* Capital One in dark: its navy button fill vanishes on the navy card, so it takes white glass */
 [data-theme="dark"] .gcard[href="capitalone"] .gcard__btn { background: rgba(255, 255, 255, .12); }
 
@@ -870,6 +844,7 @@ fieldset.field > legend { margin-bottom: 4px; }
   .home .gcard--me .gcard__body { flex: 1; gap: 0; }
   .home .gcard--me .gcard__intro { flex: 1; justify-content: center; gap: 24px; }
   .home .gcard--me .gcard__btn { width: 100%; }
+  .home .gcard--svc, [data-theme="dark"] .home .gcard--svc { --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .36)); }
 
   .bar {
     position: absolute; z-index: 5; left: 0; right: 0; bottom: 0; isolation: isolate;
@@ -1026,7 +1001,7 @@ fieldset.field > legend { margin-bottom: 4px; }
 }
 
 /* =====================================================================
-   Motion Lab 2 studies (branch motion-lab-2). Each keyed to an m-* class; ?lab toggles them.
+   Entrance and scroll studies. Each is keyed to an m-* class set in the page head.
    ===================================================================== */
 @media (prefers-reduced-motion: no-preference) {
   /* 1 · Titles resolve from a soft blur and loose tracking */
@@ -1072,19 +1047,6 @@ fieldset.field > legend { margin-bottom: 4px; }
   .m-snap .vert .gcard { scroll-snap-align: start; }
 }
 
-/* Motion Lab panel (?lab) */
-.lab {
-  position: fixed; z-index: 100; left: 12px; top: 50%; translate: 0 -50%; width: 240px;
-  padding: 14px 16px; border-radius: 16px; background: var(--neutral-paper); color: var(--neutral-ink);
-  box-shadow: 0 0 0 1px var(--neutral-ink-a12), 0 12px 40px var(--neutral-ink-a20);
-  font: 500 13px/16px var(--font-sans); letter-spacing: -0.02em;
-}
-.lab h2 { font: italic 400 24px/28px var(--font-serif); margin: 0 0 8px; }
-.lab label { display: flex; align-items: center; gap: 8px; padding: 3px 0; cursor: pointer; }
-.lab input { accent-color: var(--brand-instagram-solid); }
-.lab p { margin: 8px 0 0; color: var(--neutral-ink-a50); }
-.lab button { margin-top: 8px; font: inherit; color: var(--neutral-ink-a50); text-decoration: underline; }
-
 /* =====================================================================
    Hover: a slight fade on every button, card and mockup.
    Buttons also nudge their arrow; cards and heroes let their mockup drift a little closer.
@@ -1123,9 +1085,9 @@ fieldset.field > legend { margin-bottom: 4px; }
    (Navigation pills, chips and the round icon buttons keep their pill shape.)
    ===================================================================== */
 :root { --radius-button: 12px; }
-.cta, .cta--solid, .cta--soon, .svc-cta, .svc-submit, .svc-offer__cta, .svc-edit, .gcard__btn,
+.cta, .cta--solid, .cta--soon, .svc-cta, .svc-submit, .svc-edit, .gcard__btn,
 .vert .gcard:not(.gcard--me) .gcard__btn,
-.cta:focus-visible, .svc-submit:focus-visible, .svc-offer__cta:focus-visible, .svc-edit:focus-visible { border-radius: var(--radius-button); }
+.cta:focus-visible, .svc-submit:focus-visible, .svc-edit:focus-visible { border-radius: var(--radius-button); }
 
 /* Phone bars: Services sits beside View All, which gives up width (and, on the smallest phones, its label) to make room */
 @media (max-width: 799px) {
@@ -1142,4 +1104,25 @@ fieldset.field > legend { margin-bottom: 4px; }
 @media (max-width: 359px) {
   .mnav .viewall__btn, .topnav__svc + .viewall .viewall__btn { width: 56px; }
   .mnav .viewall__btn span, .topnav__svc + .viewall .viewall__btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
+
+/* =====================================================================
+   Services card, per layout (Figma qqIGEVfqWgUEhCZxNjbFwX: Lopsided, Mobile, Desktop, Super Desktop).
+   Phones and Home: 600px tall, everything stacked at the foot. Vert desktop: a 400px banner with the text on the left.
+   ===================================================================== */
+.gcard.gcard--svc { height: 600px; padding: 12px; }
+.gcard--svc .gcard__body { flex: 1; align-items: stretch; gap: 24px; }
+.gcard--svc .gcard__intro { flex: 1; justify-content: flex-end; gap: 24px; width: auto; }
+.gcard.gcard--svc .gcard__btn { width: 100%; background: rgba(255, 255, 255, .12); color: #fff; }   /* white glass in both themes; the label turns white to stay readable */
+@media (min-width: 800px) {
+  .home .gcard.gcard--svc { height: 600px; }
+  .home .gcard--svc .gcard__body { gap: 24px; }
+  .home .gcard--svc .gcard__intro { justify-content: flex-end; }
+  .vert .gcard.gcard--svc { display: none; }
+}
+@media (min-width: 1280px) {
+  .vert .gcard.gcard--svc { display: flex; height: 400px; padding: 24px; justify-content: flex-end; align-items: flex-start; }
+  .vert .gcard--svc .gcard__body { flex: none; width: 325px; max-width: 100%; }
+  .vert .gcard--svc .gcard__intro { flex: none; align-items: flex-start; }
+  .vert .gcard--svc .gcard__text { text-align: left; }
 }

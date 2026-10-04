@@ -224,7 +224,7 @@
   addEventListener('resize', onScrollFloat);
   float();
 
-  /* ---------- Lab 2 · 3: the framing question arrives word by word ---------- */
+  /* ---------- the framing question arrives word by word ---------- */
   if (on('words')) {
     document.querySelectorAll('.cs-header__question').forEach(function (q) {
       var text = q.textContent, vis = spoken(q, text);
@@ -239,7 +239,7 @@
     });
   }
 
-  /* ---------- Lab 2 · 7: case-study chapters — hero first, then its cards ---------- */
+  /* ---------- case-study chapters — hero first, then its cards ---------- */
   if (on('chapters') && matchMedia('(min-width: 1280px)').matches) {
     document.querySelectorAll('.cs-group').forEach(function (g) {
       var hero = g.querySelector('.cs-hero');
@@ -248,7 +248,7 @@
     });
   }
 
-  /* ---------- Lab 2 · 8: previous and next projects' tints rise from their own sides near the end ---------- */
+  /* ---------- previous and next projects' tints rise from their own sides near the end ---------- */
   var footer = document.querySelector('.cs-footer'), bleeds = [];
   if (on('bleed') && footer) {
     [['prev', '.next__card--prev'], ['next', '.next__card--next']].forEach(function (pair) {
@@ -273,7 +273,7 @@
     bleedStep();
   }
 
-  /* ---------- Lab 2 · 11: Read.me photos develop like film ---------- */
+  /* ---------- Read.me photos develop like film ---------- */
   if (on('develop') && 'IntersectionObserver' in window) {
     var dio = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('developed'); dio.unobserve(en.target); } });
@@ -285,37 +285,6 @@
 
 /* ---------- First visit is remembered after this page ---------- */
 try { localStorage.setItem('visited', '1'); } catch (e) {}
-
-/* ---------- Motion Lab 2: ?lab shows a panel to switch each study on and off ---------- */
-(function () {
-  var FLAGS = [
-    ['tblur', 'Titles resolve from a blur'], ['italic', 'Titles settle into italic'], ['words', 'Question arrives word by word'],
-    ['chapters', 'Hero first, then its cards'], ['bleed', 'Both projects’ tints rise'], ['snap', 'Gallery settles on a card'],
-    ['first', 'First-visit pause'], ['develop', 'Read.me photos develop']
-  ];
-  var store = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} };
-  if (/[?&]lab\b/.test(location.search)) store('motion-lab', '1');
-  if (store('motion-lab') !== '1') return;
-  var off = [];
-  try { off = JSON.parse(store('motion-lab-off') || '[]'); } catch (e) {}
-  var panel = document.createElement('aside');
-  panel.className = 'lab';
-  panel.setAttribute('aria-label', 'Motion Lab');
-  panel.innerHTML = '<h2>Motion Lab 2</h2>' + FLAGS.map(function (f) {
-    return '<label><input type="checkbox" id="lab-' + f[0] + '" data-flag="' + f[0] + '"' + (off.indexOf(f[0]) < 0 ? ' checked' : '') + '> ' + f[1] + '</label>';
-  }).join('') + '<p>Entrances show on the next page load. The first-visit pause replays after you reset it.</p>'
-    + '<button type="button" data-lab-reset>Reset first visit</button><br><button type="button" data-lab-close>Hide this panel</button>';
-  document.body.appendChild(panel);
-  panel.addEventListener('change', function (e) {
-    var f = e.target.getAttribute('data-flag');
-    off = off.filter(function (x) { return x !== f; });
-    if (!e.target.checked) off.push(f);
-    store('motion-lab-off', JSON.stringify(off));
-    document.documentElement.classList.toggle('m-' + f, e.target.checked);
-  });
-  panel.querySelector('[data-lab-reset]').addEventListener('click', function () { store('visited', null); location.reload(); });
-  panel.querySelector('[data-lab-close]').addEventListener('click', function () { store('motion-lab', null); panel.remove(); });
-})();
 
 /* ---------- Services: inquiry form ----------
    Sends the answers straight to Wes's inbox as a markdown email through FormSubmit (the site has no server).
