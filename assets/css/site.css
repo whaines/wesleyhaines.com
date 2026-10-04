@@ -228,7 +228,7 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   display: inline-flex; align-items: center; justify-content: center; gap: 18px;
   height: 64px; padding: 0 24px; border-radius: 999px;
   background: var(--neutral-ink-a12);
-  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
   color: var(--neutral-ink-a50);
   white-space: nowrap;
   transition: opacity .25s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1);
@@ -242,7 +242,7 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   display: inline-flex; align-items: center; gap: 12px;
   height: 64px; padding: 8px 24px 8px 8px; border-radius: 999px;
   background: var(--neutral-ink-a12);
-  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
   color: var(--neutral-ink-a50);
   white-space: nowrap;
 }
@@ -261,7 +261,7 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   display: inline-flex; align-items: center; justify-content: center; gap: 12px;
   width: 200px; height: 64px; border-radius: 40px;
   background: var(--neutral-ink-a12);
-  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
   color: var(--neutral-ink);
   transition: opacity .25s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1);
 }
@@ -271,7 +271,7 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   display: grid; grid-template-columns: repeat(4, 48px); gap: 6px;
   padding: 8px 12px; border-radius: 40px;
   background: var(--neutral-ink-a12);
-  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
   opacity: 0; scale: .6; pointer-events: none; visibility: hidden;
   transition: opacity .25s ease, scale .45s cubic-bezier(.34, 1.56, .64, 1), visibility 0s linear .45s;
 }
@@ -562,8 +562,7 @@ button.cta { cursor: pointer; }
 @media (prefers-reduced-motion: no-preference) { html:has(.case--services) { scroll-behavior: smooth; } }
 
 /* Entry points: a Services pill in the inner-page top nav and the Home bar */
-.topnav__svc, .homenav__svc { display: inline-flex; align-items: center; gap: 8px; }
-@media (min-width: 800px) and (max-width: 1799px) { .homenav:has(.viewall.is-open, .viewall.is-sizing) .homenav__svc { display: none; } }
+.topnav__svc { display: inline-flex; align-items: center; gap: 8px; }
 
 /* The page sits on the site's own paper ground, like every other page */
 .svc-gold { color: var(--brand-readme-solid-static); }
@@ -636,8 +635,11 @@ button.cta { cursor: pointer; }
 /* Inquiry card: title top, 566px field column, submit at the bottom */
 .svc-formcard {
   display: flex; flex-direction: column; align-items: center; gap: 40px; min-width: 0; padding: 24px 16px;
-  border: 2px solid var(--neutral-ink-a12); border-radius: 16px; background: none; color: var(--neutral-ink);
+  border: 2px solid var(--neutral-ink-a12); border-radius: 16px; background: var(--svc-card); color: var(--neutral-ink);
 }
+/* Figma 23:6324: the card is a shade off the page and the fields are the page color itself (white on #FBF9F9); dark is the other way round (12% white fields on a black card) */
+:root { --svc-card: #FBF9F9; --svc-field: #FFFFFF; }
+[data-theme="dark"] { --svc-card: #000000; --svc-field: rgba(255, 255, 255, .12); }
 .svc-formcard__title { font: italic 400 36px/47px var(--font-serif); letter-spacing: -0.04em; }
 .svc-form { display: flex; flex-direction: column; align-self: stretch; flex: 1; gap: 24px; }
 .svc-form__body { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 40px; }
@@ -651,7 +653,7 @@ fieldset.field > legend { margin-bottom: 4px; }
 .field__help:empty, .field__error:empty { display: none; }
 .field__input {
   width: 100%; height: 72px; padding: 0 20px; border: 2px solid var(--neutral-ink-a12); border-radius: 12px;
-  background: color-mix(in srgb, var(--neutral-ink) 4%, transparent); color: var(--neutral-ink); caret-color: var(--neutral-ink);
+  background: var(--svc-field); color: var(--neutral-ink); caret-color: var(--neutral-ink);
   font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; -webkit-appearance: none; appearance: none;
 }
 .field__input--area, .field__input--area:focus-visible { height: auto; min-height: 199px; padding: 18px 20px; border-radius: 12px; resize: vertical; }
@@ -748,7 +750,7 @@ fieldset.field > legend { margin-bottom: 4px; }
 .cases img { width: 24px; height: 24px; }
 .switch {
   display: inline-flex; gap: 8px; flex: none; padding: 8px; border-radius: 999px;
-  background: var(--neutral-ink-a12); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  background: var(--neutral-ink-a12); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
 }
 .switch a { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 999px; transition: opacity .25s ease; }
 .switch__bars { display: flex; gap: 2px; }
@@ -809,22 +811,22 @@ fieldset.field > legend { margin-bottom: 4px; }
 /* Read.me card: holographic photo, white type */
 .gcard--me { height: 400px; padding: 16px; color: #fff; background: var(--neutral-paper); --holo-w: 841px; --holo-o: .72; }
 .gcard__holo { position: absolute; z-index: -2; left: 0; top: 0; width: var(--holo-w); height: auto; max-width: none; opacity: var(--holo-o); }
-.gcard--me::after { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--holo-veil, none); }
+.gcard--me::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--holo-veil, none); }
 [data-theme="dark"] .gcard--me { --holo-o: 1; --holo-veil: linear-gradient(90deg, rgba(0, 0, 0, .12), rgba(0, 0, 0, .6)); }
 .gcard--me .gcard__body { align-items: center; gap: 24px; }
 .gcard__intro { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 325px; max-width: 100%; }
 .gcard__me-logo { width: 85px; height: 50px; }
-.gcard--me .gcard__btn { width: 325px; max-width: 100%; background: #fff; color: #000; }
+.gcard--me .gcard__btn { width: 325px; max-width: 100%; background: rgba(255, 255, 255, .12); color: #fff; }   /* white glass; the label is white like the card's type */
 /* Services card: the Read.me card's layout over a photo that fades to a soft shadow at the foot, in both themes */
-.gcard--svc { background: #1f2a1c; --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .36)); }
-[data-theme="dark"] .gcard--svc { --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .36)); }
+.gcard--svc { background: #1f2a1c; --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .28)); }
+[data-theme="dark"] .gcard--svc { --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .28)); }
 /* The photo is sharp at the top and melts into a blur behind the text (the design's blur layer, faded in with a mask) */
 .gcard--svc::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  -webkit-mask-image: linear-gradient(transparent 25%, #000 70%); mask-image: linear-gradient(transparent 25%, #000 70%);
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit;   /* a backdrop blur is not clipped by the card's own rounded corners */
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  -webkit-mask-image: linear-gradient(transparent 35%, #000 90%); mask-image: linear-gradient(transparent 35%, #000 90%);
 }
-.gcard__photo { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.gcard__photo { border-radius: inherit; position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
 /* Capital One in dark: its navy button fill vanishes on the navy card, so it takes white glass */
 [data-theme="dark"] .gcard[href="capitalone"] .gcard__btn { background: rgba(255, 255, 255, .12); }
 
@@ -844,7 +846,7 @@ fieldset.field > legend { margin-bottom: 4px; }
   .home .gcard--me .gcard__body { flex: 1; gap: 0; }
   .home .gcard--me .gcard__intro { flex: 1; justify-content: center; gap: 24px; }
   .home .gcard--me .gcard__btn { width: 100%; }
-  .home .gcard--svc, [data-theme="dark"] .home .gcard--svc { --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .36)); }
+  .home .gcard--svc, [data-theme="dark"] .home .gcard--svc { --holo-veil: linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .28)); }
 
   .bar {
     position: absolute; z-index: 5; left: 0; right: 0; bottom: 0; isolation: isolate;
@@ -923,9 +925,6 @@ fieldset.field > legend { margin-bottom: 4px; }
   .panel__bio { max-width: 378px; }
   .panel__ctas { flex-direction: row; align-items: center; }
   .panel__sep { display: block; }
-  /* Vert: Case Studies and Services share a row; View All takes the next */
-  .vert .panel__ctas { flex-wrap: wrap; row-gap: 12px; }
-  .vert .panel__sep--last { display: none; }
   .vert .gcard__img { left: var(--vsd-x); top: var(--vsd-y); width: var(--vsd-w); height: var(--vsd-hh); }
   .vert .gcard--text-left .gcard__img { left: auto; right: var(--vsd-x); }
   .vert .gcard--me { --holo-w: 1204px; }
@@ -1091,19 +1090,19 @@ fieldset.field > legend { margin-bottom: 4px; }
 
 /* Phone bars: Services sits beside View All, which gives up width (and, on the smallest phones, its label) to make room */
 @media (max-width: 799px) {
-  .mnav__svc, .topnav__svc .pill { height: 48px; padding: 0 16px; }
-  .mnav .viewall__btn, .topnav__svc + .viewall .viewall__btn { width: 124px; gap: 8px; }
+  .topnav__svc .pill { height: 48px; padding: 0 16px; }
+  .topnav__svc + .viewall .viewall__btn { width: 124px; gap: 8px; }
   /* View All is no longer in the middle of the bar, so its menu centers on the bar instead of on the button */
-  .mnav .viewall, .topnav .viewall { position: static; }
-  .mnav__svc, .topnav__svc { transition: opacity .25s ease; }
-  .mnav:has(.viewall.is-open) .mnav__svc, .topnav:has(.viewall.is-open) .topnav__svc { opacity: 0; pointer-events: none; }
+  .topnav .viewall { position: static; }
+  .topnav__svc { transition: opacity .25s ease; }
+  .topnav:has(.viewall.is-open) .topnav__svc { opacity: 0; pointer-events: none; }
 }
 @media (max-width: 374px) {
-  .mnav, .topnav { gap: 8px; }
+  .topnav { gap: 8px; }
 }
 @media (max-width: 359px) {
-  .mnav .viewall__btn, .topnav__svc + .viewall .viewall__btn { width: 56px; }
-  .mnav .viewall__btn span, .topnav__svc + .viewall .viewall__btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .topnav__svc + .viewall .viewall__btn { width: 56px; }
+  .topnav__svc + .viewall .viewall__btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 }
 
 /* =====================================================================
@@ -1113,7 +1112,7 @@ fieldset.field > legend { margin-bottom: 4px; }
 .gcard.gcard--svc { height: 600px; padding: 12px; }
 .gcard--svc .gcard__body { flex: 1; align-items: stretch; gap: 24px; }
 .gcard--svc .gcard__intro { flex: 1; justify-content: flex-end; gap: 24px; width: auto; }
-.gcard.gcard--svc .gcard__btn { width: 100%; background: rgba(255, 255, 255, .12); color: #fff; }   /* white glass in both themes; the label turns white to stay readable */
+.gcard.gcard--svc .gcard__btn { width: 100%; }
 @media (min-width: 800px) {
   .home .gcard.gcard--svc { height: 600px; }
   .home .gcard--svc .gcard__body { gap: 24px; }
@@ -1126,3 +1125,23 @@ fieldset.field > legend { margin-bottom: 4px; }
   .vert .gcard--svc .gcard__intro { flex: none; align-items: flex-start; }
   .vert .gcard--svc .gcard__text { text-align: left; }
 }
+
+/* =====================================================================
+   Every translucent button sits on the same 40px background blur.
+   ===================================================================== */
+:root { --glass-blur: 40px; }
+.cta, .cta--soon, .gcard__btn, .cases, .svc-cta, .svc-submit, .svc-edit, .choice__label, .next__card, .icon-btn {
+  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+}
+
+/* =====================================================================
+   Translucent CTAs all carry a 24% fill (on the 40px blur above), in both themes.
+   Nav pills, chips and the previous/next cards are not CTAs and keep their own fills.
+   ===================================================================== */
+:root { --cta-readme-24: color-mix(in srgb, var(--brand-readme-solid) 24%, transparent); }
+.gcard--me .gcard__btn, .gcard.gcard--svc .gcard__btn, [data-theme="dark"] .gcard[href="capitalone"] .gcard__btn { background: rgba(255, 255, 255, .24); }
+.cta[style*="--cta-fill:var(--brand-readme-a16)"], .cta[style*="--cta-fill:transparent"], .svc-cta--inquiry { --cta-fill: var(--cta-readme-24) !important; }
+.cta--soon { background: var(--tint-strong); }
+.cta--glass, .svc-edit { --cta-fill: var(--neutral-ink-a24, color-mix(in srgb, var(--neutral-ink) 24%, transparent)); }
+.pill.svc-edit { background: color-mix(in srgb, var(--neutral-ink) 24%, transparent); }
+.svc-submit { background: color-mix(in srgb, var(--brand-readme-solid-static) 24%, transparent); }
