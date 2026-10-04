@@ -373,7 +373,7 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
 .caption { display: none; }
 @media (min-width: 800px) {
   .caption { display: flex; flex-direction: column; gap: 24px; color: var(--caption, var(--brand)); }
-  .caption__line { width: 100%; height: 4px; margin: -2px 0; }
+  .caption__line { display: block; width: 100%; height: 4px; margin: -2px 0; border-radius: 2px; background: currentColor; opacity: .5; }
   .caption__rule { height: 0; border-top: 1px solid currentColor; opacity: .5; }
   .caption__row { display: flex; justify-content: space-between; gap: 24px; font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
   .caption__row span { width: 200px; }
@@ -562,10 +562,8 @@ button.cta { cursor: pointer; }
 @media (prefers-reduced-motion: no-preference) { html:has(.case--services) { scroll-behavior: smooth; } }
 
 /* Entry points: a Services pill in the inner-page top nav and the Home bar */
-.topnav__svc, .homenav__svc { display: none; align-items: center; gap: 8px; }
-@media (min-width: 800px) { .topnav__svc { display: inline-flex; } }
-@media (min-width: 1280px) { .homenav__svc { display: inline-flex; } }
-@media (min-width: 1280px) and (max-width: 1799px) { .homenav:has(.viewall.is-open, .viewall.is-sizing) .homenav__svc { display: none; } }
+.topnav__svc, .homenav__svc { display: inline-flex; align-items: center; gap: 8px; }
+@media (min-width: 800px) and (max-width: 1799px) { .homenav:has(.viewall.is-open, .viewall.is-sizing) .homenav__svc { display: none; } }
 
 /* The page sits on the site's own paper ground, like every other page */
 .svc-gold { color: var(--brand-readme-solid-static); }
@@ -1128,3 +1126,20 @@ fieldset.field > legend { margin-bottom: 4px; }
 .cta, .cta--solid, .cta--soon, .svc-cta, .svc-submit, .svc-offer__cta, .svc-edit, .gcard__btn,
 .vert .gcard:not(.gcard--me) .gcard__btn,
 .cta:focus-visible, .svc-submit:focus-visible, .svc-offer__cta:focus-visible, .svc-edit:focus-visible { border-radius: var(--radius-button); }
+
+/* Phone bars: Services sits beside View All, which gives up width (and, on the smallest phones, its label) to make room */
+@media (max-width: 799px) {
+  .mnav__svc, .topnav__svc .pill { height: 48px; padding: 0 16px; }
+  .mnav .viewall__btn, .topnav__svc + .viewall .viewall__btn { width: 124px; gap: 8px; }
+  /* View All is no longer in the middle of the bar, so its menu centers on the bar instead of on the button */
+  .mnav .viewall, .topnav .viewall { position: static; }
+  .mnav__svc, .topnav__svc { transition: opacity .25s ease; }
+  .mnav:has(.viewall.is-open) .mnav__svc, .topnav:has(.viewall.is-open) .topnav__svc { opacity: 0; pointer-events: none; }
+}
+@media (max-width: 374px) {
+  .mnav, .topnav { gap: 8px; }
+}
+@media (max-width: 359px) {
+  .mnav .viewall__btn, .topnav__svc + .viewall .viewall__btn { width: 56px; }
+  .mnav .viewall__btn span, .topnav__svc + .viewall .viewall__btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
