@@ -309,7 +309,8 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   display: flex; align-items: flex-end; justify-content: center; gap: 12px;
 }
 .topnav__left, .topnav__right { display: flex; align-items: center; gap: 8px; }
-.topnav .pill--home, .topnav .topnav__chip, .topnav .sep { display: none; }
+/* Separators hide and show through their wrapper, so the light and dark images always follow the same rule */
+.topnav .pill--home, .topnav .topnav__chip, .topnav__sep { display: none; }
 .topnav__back { width: 48px; height: 48px; }
 .topnav .viewall__btn { width: 160px; height: 48px; }
 .topnav .viewall__btn img { width: 32px; height: 32px; }
@@ -319,10 +320,10 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   .topnav .pill--home { display: inline-flex; }
   .topnav .viewall__btn { width: 200px; height: 64px; }
   .topnav .viewall__btn img { width: 38px; height: 39px; }
-  .topnav__right .sep { display: block; }
+  .topnav__right .topnav__sep { display: inline-flex; }
 }
 @media (min-width: 1280px) {
-  .topnav .topnav__chip, .topnav__left .sep { display: inline-flex; }
+  .topnav .topnav__chip, .topnav__left .topnav__sep { display: inline-flex; }
 }
 
 /* ---------- Page shell ---------- */
@@ -349,6 +350,7 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   transition: opacity .25s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1);
 }
 .cta img { width: 14.5px; height: 14.5px; }
+.cta .cta__icon { background: currentColor; object-fit: none; object-position: -999px 0; }   /* masked: shows the label color, not the file's ink */
 .cta--soon { background: var(--tint); color: var(--brand-a50); outline: 2px dashed var(--tint-strong); outline-offset: -2px; }
 .cta--soon img { display: none; }
 .cs-header__ctas { display: flex; gap: 12px; justify-content: center; }
@@ -438,6 +440,8 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), opacity .25s ease;
 }
 .next__card--prev { flex-direction: row; }
+/* Phones: name and arrow share one centered row, at opposite ends of the card */
+.next__label { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
 .next__arrow { width: 12px; height: 6px; flex: none; }
 .next__arrow--prev { rotate: 90deg; }
 .next__arrow--next { rotate: -90deg; }
@@ -448,7 +452,7 @@ br[class^="at-"], br[class*=" at-"] { display: none; }
   .next__card { width: 320px; height: 120px; font: italic 400 36px/47px var(--font-serif); letter-spacing: -0.04em; }
   .next__card--prev { justify-content: flex-end; }
   .next__card--next { justify-content: flex-start; }
-  .next__card .next__label { display: inline-flex; align-items: center; gap: 12px; }
+  .next__card .next__label { display: inline-flex; align-items: center; gap: 12px; width: auto; }
   .next__art { display: block; position: absolute; left: var(--ax); top: var(--ay); width: var(--aw); height: auto; pointer-events: none; }
 }
 
@@ -563,10 +567,7 @@ button.cta { cursor: pointer; }
 @media (min-width: 1280px) { .homenav__svc { display: inline-flex; } }
 @media (min-width: 1280px) and (max-width: 1799px) { .homenav:has(.viewall.is-open, .viewall.is-sizing) .homenav__svc { display: none; } }
 
-/* Ground (the frames' warm grey) and the shared 2px card border */
-:root { --svc-ground: #E9E6E1; }
-[data-theme="dark"] { --svc-ground: #141414; }
-html:has(.case--services), .case--services { background: var(--svc-ground); }
+/* The page sits on the site's own paper ground, like every other page */
 .svc-gold { color: var(--brand-readme-solid-static); }
 
 /* Header: collab, three set lines with stickers, intro, two CTAs; 24px apart */
@@ -588,7 +589,8 @@ html:has(.case--services), .case--services { background: var(--svc-ground); }
 .svc-hero__intro { max-width: 351px; }
 .svc-hero__ctas { display: flex; gap: 8px; width: 100%; }
 .svc-cta { justify-content: center; gap: 12px; min-height: 64px; padding: 20px 24px; border-radius: 24px; font: 600 16px/19px var(--font-sans); letter-spacing: -0.06em; }
-.svc-cta--inquiry { flex: 1; --cta-fill: var(--neutral-paper); --cta-ink: var(--brand-readme-solid-static); }
+.svc-cta--inquiry { flex: 1; --cta-fill: var(--brand-readme-a16); --cta-ink: var(--brand-readme-solid); }
+/* Dark: Read.me's color turns lavender, on its lavender tint, like the buttons on Read.me */
 .svc-cta--cv { flex: none; --cta-fill: var(--brand-spotify-a24); --cta-ink: var(--brand-spotify-solid); }
 .svc-cta__icon { width: 15.43px; height: 18px; flex: none; }
 @media (min-width: 800px) {
@@ -851,6 +853,8 @@ fieldset.field > legend { margin-bottom: 4px; }
 .gcard__intro { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 325px; max-width: 100%; }
 .gcard__me-logo { width: 85px; height: 50px; }
 .gcard--me .gcard__btn { width: 325px; max-width: 100%; background: #fff; color: #000; }
+/* Capital One in dark: its navy button fill vanishes on the navy card, so it takes white glass */
+[data-theme="dark"] .gcard[href="capitalone"] .gcard__btn { background: rgba(255, 255, 255, .12); }
 
 /* ---------- Home, tablet and up: horizontal "lopsided" gallery + bottom bar ---------- */
 @media (min-width: 800px) {
@@ -1115,3 +1119,12 @@ fieldset.field > legend { margin-bottom: 4px; }
   .gcard:hover .gcard__img { scale: 1.025; }
   .cs-hero:hover img, .photo:hover img, .cv-sheet:hover img { scale: 1.02; }
 }
+
+/* =====================================================================
+   Buttons and CTAs share one 12px corner, at every size and in every state.
+   (Navigation pills, chips and the round icon buttons keep their pill shape.)
+   ===================================================================== */
+:root { --radius-button: 12px; }
+.cta, .cta--solid, .cta--soon, .svc-cta, .svc-submit, .svc-offer__cta, .svc-edit, .gcard__btn,
+.vert .gcard:not(.gcard--me) .gcard__btn,
+.cta:focus-visible, .svc-submit:focus-visible, .svc-offer__cta:focus-visible, .svc-edit:focus-visible { border-radius: var(--radius-button); }
