@@ -1107,23 +1107,24 @@ fieldset.field > legend { margin-bottom: 4px; }
 
 /* =====================================================================
    Services card, per layout (Figma qqIGEVfqWgUEhCZxNjbFwX: Lopsided, Mobile, Desktop, Super Desktop).
-   Phones and Home: 600px tall, everything stacked at the foot. Vert desktop: a 400px banner with the text on the left.
+   Phones and Home: 600px tall, everything stacked at the foot. Vert from tablet up: a banner with the text on the left.
    ===================================================================== */
 .gcard.gcard--svc { height: 600px; padding: 12px; }
 .gcard--svc .gcard__body { flex: 1; align-items: stretch; gap: 24px; }
 .gcard--svc .gcard__intro { flex: 1; justify-content: flex-end; gap: 24px; width: auto; }
 .gcard.gcard--svc .gcard__btn { width: 100%; }
 @media (min-width: 800px) {
-  .home .gcard.gcard--svc { height: 600px; }
+  .home .gcard.gcard--svc { height: 640px; }
   .home .gcard--svc .gcard__body { gap: 24px; }
   .home .gcard--svc .gcard__intro { justify-content: flex-end; }
-  .vert .gcard.gcard--svc { display: none; }
-}
-@media (min-width: 1280px) {
-  .vert .gcard.gcard--svc { display: flex; height: 400px; padding: 24px; justify-content: flex-end; align-items: flex-start; }
+  /* Vert, tablet and up: a banner across the full row with the text on the left (371px beside the two-column grid, like Read.me's; 400px on desktop) */
+  .vert .gcard.gcard--svc { grid-column: 1 / -1; height: 371px; padding: 24px; justify-content: flex-end; align-items: flex-start; }
   .vert .gcard--svc .gcard__body { flex: none; width: 325px; max-width: 100%; }
   .vert .gcard--svc .gcard__intro { flex: none; align-items: flex-start; }
   .vert .gcard--svc .gcard__text { text-align: left; }
+}
+@media (min-width: 1280px) {
+  .vert .gcard.gcard--svc { height: 400px; }
 }
 
 /* =====================================================================
