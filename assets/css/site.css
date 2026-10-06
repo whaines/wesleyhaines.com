@@ -841,6 +841,7 @@ fieldset.field > legend { margin-bottom: 4px; }
   .home-main > .gallery::-webkit-scrollbar { display: none; }
   .home .gcard { width: 500px; height: var(--lop-h); background: var(--tint); }
   .home .gcard__img { left: var(--lop-x); top: var(--lop-y); width: var(--lop-w); height: var(--lop-hh); }
+  .home .gcard[href="etsy"] { height: 800px; }   /* taller than its Figma frame (700), by request */
   .home .gcard--me { height: 700px; padding: 12px; --holo-w: 1062px; --holo-o: 1; --holo-veil: rgba(0, 0, 0, .2); }
   [data-theme="dark"] .home .gcard--me { --holo-veil: linear-gradient(90deg, rgba(0, 0, 0, .12), rgba(0, 0, 0, .6)); }
   .home .gcard--me .gcard__body { flex: 1; gap: 0; }
@@ -1114,7 +1115,7 @@ fieldset.field > legend { margin-bottom: 4px; }
 .gcard--svc .gcard__intro { flex: 1; justify-content: flex-end; gap: 24px; width: auto; }
 .gcard.gcard--svc .gcard__btn { width: 100%; }
 @media (min-width: 800px) {
-  .home .gcard.gcard--svc { height: 640px; }
+  .home .gcard.gcard--svc { height: 700px; }
   .home .gcard--svc .gcard__body { gap: 24px; }
   .home .gcard--svc .gcard__intro { justify-content: flex-end; }
   /* Vert, tablet and up: a banner across the full row with the text on the left (371px beside the two-column grid, like Read.me's; 400px on desktop) */
