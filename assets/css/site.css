@@ -614,7 +614,7 @@ button.cta { cursor: pointer; }
 
 /* "About <service>" marker under the Inquiry title, set by an offer's Ask about this */
 .svc-interest { display: inline-flex; align-items: center; gap: 8px; height: 40px; margin-top: -24px; padding: 0 6px 0 16px; border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-readme-solid-static) 30%, transparent); font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
+  background: color-mix(in srgb, var(--brand-readme-solid) 30%, transparent); font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; }
 .svc-interest[hidden] { display: none; }
 .svc-interest__clear { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; font-size: 18px; line-height: 1; color: var(--neutral-ink-a50); }
 .svc-interest__clear:hover { color: var(--neutral-ink); }
@@ -637,9 +637,9 @@ button.cta { cursor: pointer; }
   display: flex; flex-direction: column; align-items: center; gap: 40px; min-width: 0; padding: 24px 16px;
   border: 2px solid var(--neutral-ink-a12); border-radius: 16px; background: var(--svc-card); color: var(--neutral-ink);
 }
-/* Figma 23:6324: the card is a shade off the page and the fields are the page color itself (white on #FBF9F9); dark is the other way round (12% white fields on a black card) */
+/* Figma 23:6324: the card is a shade off the page and the fields are the page color itself (white on #FBF9F9); dark is the other way round (12% white fields on a near-black card with a faint purple undertone) */
 :root { --svc-card: #FBF9F9; --svc-field: #FFFFFF; }
-[data-theme="dark"] { --svc-card: #000000; --svc-field: rgba(255, 255, 255, .12); }
+[data-theme="dark"] { --svc-card: #0E0C13; --svc-field: rgba(255, 255, 255, .12); }
 .svc-formcard__title { font: italic 400 36px/47px var(--font-serif); letter-spacing: -0.04em; }
 .svc-form { display: flex; flex-direction: column; align-self: stretch; flex: 1; gap: 24px; }
 .svc-form__body { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 40px; }
@@ -668,14 +668,14 @@ fieldset.field > legend { margin-bottom: 4px; }
   background: var(--neutral-ink-a12); color: var(--neutral-ink-a50); font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; white-space: nowrap;
   pointer-events: none; transition: background-color .25s ease, color .25s ease, opacity .4s ease;
 }
-.choice__input:checked + .choice__label { background: color-mix(in srgb, var(--brand-readme-solid-static) 50%, transparent); color: var(--neutral-ink); }
+.choice__input:checked + .choice__label { background: color-mix(in srgb, var(--brand-readme-solid) 50%, transparent); color: var(--neutral-ink); }
 .choice__input:focus-visible + .choice__label { outline: 2px solid var(--neutral-ink-a50); outline-offset: 3px; }
 @media (hover: hover) { .choice:hover .choice__label { opacity: .72; } }
 @media (prefers-reduced-motion: reduce) { .choice__label { transition: none; } }
 .svc-submit {
   align-self: stretch; min-height: 75px; margin-top: auto; padding: 26px 24px; border-radius: 16px; cursor: pointer;
-  background: color-mix(in srgb, var(--brand-readme-solid-static) 16%, transparent);
-  border: 2px solid var(--brand-readme-solid-static);
+  background: color-mix(in srgb, var(--brand-readme-solid) 16%, transparent);
+  border: 2px solid var(--brand-readme-solid);
   color: var(--neutral-ink); font: 500 16px/19px var(--font-sans); letter-spacing: -0.04em; transition: opacity .4s ease;
 }
 @media (hover: hover) { .svc-submit:hover { opacity: .72; } }
@@ -1146,4 +1146,4 @@ fieldset.field > legend { margin-bottom: 4px; }
 .cta--soon { background: var(--tint-strong); }
 .cta--glass, .svc-edit { --cta-fill: var(--neutral-ink-a24, color-mix(in srgb, var(--neutral-ink) 24%, transparent)); }
 .pill.svc-edit { background: color-mix(in srgb, var(--neutral-ink) 24%, transparent); }
-.svc-submit { background: color-mix(in srgb, var(--brand-readme-solid-static) 24%, transparent); }
+.svc-submit { background: color-mix(in srgb, var(--brand-readme-solid) 24%, transparent); }
